@@ -1,2035 +1,4 @@
-(function (window, document, vjs, undefined) {(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-//simple representation of the API
-
-var IVPAIDAdUnit = (function () {
-    function IVPAIDAdUnit() {
-        _classCallCheck(this, IVPAIDAdUnit);
-    }
-
-    _createClass(IVPAIDAdUnit, [{
-        key: 'handshakeVersion',
-
-        //all methods below
-        //are async methods
-        value: function handshakeVersion() {
-            var playerVPAIDVersion = arguments[0] === undefined ? '2.0' : arguments[0];
-            var callback = arguments[1] === undefined ? undefined : arguments[1];
-        }
-    }, {
-        key: 'initAd',
-
-        //width and height is not in the beginning because we will use the default width/height used in the constructor
-        value: function initAd(width, height, viewMode, desiredBitrate) {
-            var creativeData = arguments[4] === undefined ? '' : arguments[4];
-            var environmentVars = arguments[5] === undefined ? '' : arguments[5];
-            var callback = arguments[6] === undefined ? undefined : arguments[6];
-        }
-    }, {
-        key: 'resizeAd',
-        value: function resizeAd(width, height, viewMode) {
-            var callback = arguments[3] === undefined ? undefined : arguments[3];
-        }
-    }, {
-        key: 'startAd',
-        value: function startAd() {
-            var callback = arguments[0] === undefined ? undefined : arguments[0];
-        }
-    }, {
-        key: 'stopAd',
-        value: function stopAd() {
-            var callback = arguments[0] === undefined ? undefined : arguments[0];
-        }
-    }, {
-        key: 'pauseAd',
-        value: function pauseAd() {
-            var callback = arguments[0] === undefined ? undefined : arguments[0];
-        }
-    }, {
-        key: 'resumeAd',
-        value: function resumeAd() {
-            var callback = arguments[0] === undefined ? undefined : arguments[0];
-        }
-    }, {
-        key: 'expandAd',
-        value: function expandAd() {
-            var callback = arguments[0] === undefined ? undefined : arguments[0];
-        }
-    }, {
-        key: 'collapseAd',
-        value: function collapseAd() {
-            var callback = arguments[0] === undefined ? undefined : arguments[0];
-        }
-    }, {
-        key: 'skipAd',
-        value: function skipAd() {
-            var callback = arguments[0] === undefined ? undefined : arguments[0];
-        }
-    }, {
-        key: 'getAdLinear',
-
-        //properties that will be treat as async methods
-        value: function getAdLinear(callback) {}
-    }, {
-        key: 'getAdWidth',
-        value: function getAdWidth(callback) {}
-    }, {
-        key: 'getAdHeight',
-        value: function getAdHeight(callback) {}
-    }, {
-        key: 'getAdExpanded',
-        value: function getAdExpanded(callback) {}
-    }, {
-        key: 'getAdSkippableState',
-        value: function getAdSkippableState(callback) {}
-    }, {
-        key: 'getAdRemainingTime',
-        value: function getAdRemainingTime(callback) {}
-    }, {
-        key: 'getAdDuration',
-        value: function getAdDuration(callback) {}
-    }, {
-        key: 'setAdVolume',
-        value: function setAdVolume(soundVolume) {
-            var callback = arguments[1] === undefined ? undefined : arguments[1];
-        }
-    }, {
-        key: 'getAdVolume',
-        value: function getAdVolume(callback) {}
-    }, {
-        key: 'getAdCompanions',
-        value: function getAdCompanions(callback) {}
-    }, {
-        key: 'getAdIcons',
-        value: function getAdIcons(callback) {}
-    }]);
-
-    return IVPAIDAdUnit;
-})();
-
-exports.IVPAIDAdUnit = IVPAIDAdUnit;
-
-Object.defineProperty(IVPAIDAdUnit, 'EVENTS', {
-    writable: false,
-    configurable: false,
-    value: ['AdLoaded', 'AdStarted', 'AdStopped', 'AdSkipped', 'AdSkippableStateChange', // VPAID 2.0 new event
-    'AdSizeChange', // VPAID 2.0 new event
-    'AdLinearChange', 'AdDurationChange', // VPAID 2.0 new event
-    'AdExpandedChange', 'AdRemainingTimeChange', // [Deprecated in 2.0] but will be still fired for backwards compatibility
-    'AdVolumeChange', 'AdImpression', 'AdVideoStart', 'AdVideoFirstQuartile', 'AdVideoMidpoint', 'AdVideoThirdQuartile', 'AdVideoComplete', 'AdClickThru', 'AdInteraction', // VPAID 2.0 new event
-    'AdUserAcceptInvitation', 'AdUserMinimize', 'AdUserClose', 'AdPaused', 'AdPlaying', 'AdLog', 'AdError']
-});
-
-},{}],2:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-var _get = function get(_x15, _x16, _x17) { var _again = true; _function: while (_again) { var object = _x15, property = _x16, receiver = _x17; desc = parent = getter = undefined; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x15 = parent; _x16 = property; _x17 = receiver; _again = true; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== 'function' && superClass !== null) { throw new TypeError('Super expression must either be null or a function, not ' + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) subClass.__proto__ = superClass; }
-
-var IVPAIDAdUnit = require('./IVPAIDAdUnit').IVPAIDAdUnit;
-var ALL_VPAID_METHODS = Object.getOwnPropertyNames(IVPAIDAdUnit.prototype).filter(function (property) {
-    return ['constructor'].indexOf(property) === -1;
-});
-
-var VPAIDAdUnit = (function (_IVPAIDAdUnit) {
-    function VPAIDAdUnit(flash) {
-        _classCallCheck(this, VPAIDAdUnit);
-
-        _get(Object.getPrototypeOf(VPAIDAdUnit.prototype), 'constructor', this).call(this);
-        this._destroyed = false;
-        this._flash = flash;
-    }
-
-    _inherits(VPAIDAdUnit, _IVPAIDAdUnit);
-
-    _createClass(VPAIDAdUnit, [{
-        key: '_destroy',
-        value: function _destroy() {
-            var _this = this;
-
-            this._destroyed = true;
-            ALL_VPAID_METHODS.forEach(function (methodName) {
-                _this._flash.removeCallbackByMethodName(methodName);
-            });
-            IVPAIDAdUnit.EVENTS.forEach(function (event) {
-                _this._flash.offEvent(event);
-            });
-
-            this._flash = null;
-        }
-    }, {
-        key: 'isDestroyed',
-        value: function isDestroyed() {
-            return this._destroyed;
-        }
-    }, {
-        key: 'on',
-        value: function on(eventName, callback) {
-            this._flash.on(eventName, callback);
-        }
-    }, {
-        key: 'off',
-        value: function off(eventName, callback) {
-            this._flash.off(eventName, callback);
-        }
-    }, {
-        key: 'handshakeVersion',
-
-        //VPAID interface
-        value: function handshakeVersion() {
-            var playerVPAIDVersion = arguments[0] === undefined ? '2.0' : arguments[0];
-            var callback = arguments[1] === undefined ? undefined : arguments[1];
-
-            this._flash.callFlashMethod('handshakeVersion', [playerVPAIDVersion], callback);
-        }
-    }, {
-        key: 'initAd',
-        value: function initAd(width, height, viewMode, desiredBitrate) {
-            var creativeData = arguments[4] === undefined ? '' : arguments[4];
-            var environmentVars = arguments[5] === undefined ? '' : arguments[5];
-            var callback = arguments[6] === undefined ? undefined : arguments[6];
-
-            //resize element that has the flash object
-            this._flash.setSize(width, height);
-
-            this._flash.callFlashMethod('initAd', [this._flash.getWidth(), this._flash.getHeight(), viewMode, desiredBitrate, creativeData, environmentVars], callback);
-        }
-    }, {
-        key: 'resizeAd',
-        value: function resizeAd(width, height, viewMode) {
-            var callback = arguments[3] === undefined ? undefined : arguments[3];
-
-            //resize element that has the flash object
-            this._flash.setSize(width, height);
-
-            //resize ad inside the flash
-            this._flash.callFlashMethod('resizeAd', [this._flash.getWidth(), this._flash.getHeight(), viewMode], callback);
-        }
-    }, {
-        key: 'startAd',
-        value: function startAd() {
-            var callback = arguments[0] === undefined ? undefined : arguments[0];
-
-            this._flash.callFlashMethod('startAd', [], callback);
-        }
-    }, {
-        key: 'stopAd',
-        value: function stopAd() {
-            var callback = arguments[0] === undefined ? undefined : arguments[0];
-
-            this._flash.callFlashMethod('stopAd', [], callback);
-        }
-    }, {
-        key: 'pauseAd',
-        value: function pauseAd() {
-            var callback = arguments[0] === undefined ? undefined : arguments[0];
-
-            this._flash.callFlashMethod('pauseAd', [], callback);
-        }
-    }, {
-        key: 'resumeAd',
-        value: function resumeAd() {
-            var callback = arguments[0] === undefined ? undefined : arguments[0];
-
-            this._flash.callFlashMethod('resumeAd', [], callback);
-        }
-    }, {
-        key: 'expandAd',
-        value: function expandAd() {
-            var callback = arguments[0] === undefined ? undefined : arguments[0];
-
-            this._flash.callFlashMethod('expandAd', [], callback);
-        }
-    }, {
-        key: 'collapseAd',
-        value: function collapseAd() {
-            var callback = arguments[0] === undefined ? undefined : arguments[0];
-
-            this._flash.callFlashMethod('collapseAd', [], callback);
-        }
-    }, {
-        key: 'skipAd',
-        value: function skipAd() {
-            var callback = arguments[0] === undefined ? undefined : arguments[0];
-
-            this._flash.callFlashMethod('skipAd', [], callback);
-        }
-    }, {
-        key: 'getAdLinear',
-
-        //properties that will be treat as async methods
-        value: function getAdLinear(callback) {
-            this._flash.callFlashMethod('getAdLinear', [], callback);
-        }
-    }, {
-        key: 'getAdWidth',
-        value: function getAdWidth(callback) {
-            this._flash.callFlashMethod('getAdWidth', [], callback);
-        }
-    }, {
-        key: 'getAdHeight',
-        value: function getAdHeight(callback) {
-            this._flash.callFlashMethod('getAdHeight', [], callback);
-        }
-    }, {
-        key: 'getAdExpanded',
-        value: function getAdExpanded(callback) {
-            this._flash.callFlashMethod('getAdExpanded', [], callback);
-        }
-    }, {
-        key: 'getAdSkippableState',
-        value: function getAdSkippableState(callback) {
-            this._flash.callFlashMethod('getAdSkippableState', [], callback);
-        }
-    }, {
-        key: 'getAdRemainingTime',
-        value: function getAdRemainingTime(callback) {
-            this._flash.callFlashMethod('getAdRemainingTime', [], callback);
-        }
-    }, {
-        key: 'getAdDuration',
-        value: function getAdDuration(callback) {
-            this._flash.callFlashMethod('getAdDuration', [], callback);
-        }
-    }, {
-        key: 'setAdVolume',
-        value: function setAdVolume(volume) {
-            var callback = arguments[1] === undefined ? undefined : arguments[1];
-
-            this._flash.callFlashMethod('setAdVolume', [volume], callback);
-        }
-    }, {
-        key: 'getAdVolume',
-        value: function getAdVolume(callback) {
-            this._flash.callFlashMethod('getAdVolume', [], callback);
-        }
-    }, {
-        key: 'getAdCompanions',
-        value: function getAdCompanions(callback) {
-            this._flash.callFlashMethod('getAdCompanions', [], callback);
-        }
-    }, {
-        key: 'getAdIcons',
-        value: function getAdIcons(callback) {
-            this._flash.callFlashMethod('getAdIcons', [], callback);
-        }
-    }]);
-
-    return VPAIDAdUnit;
-})(IVPAIDAdUnit);
-
-exports.VPAIDAdUnit = VPAIDAdUnit;
-
-},{"./IVPAIDAdUnit":1}],3:[function(require,module,exports){
-'use strict';
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-var JSFlashBridge = require('./jsFlashBridge').JSFlashBridge;
-var VPAIDAdUnit = require('./VPAIDAdUnit').VPAIDAdUnit;
-
-var noop = require('./utils').noop;
-var callbackTimeout = require('./utils').callbackTimeout;
-var isPositiveInt = require('./utils').isPositiveInt;
-var createElementWithID = require('./utils').createElementWithID;
-var uniqueVPAID = require('./utils').unique('vpaid');
-
-var ERROR = 'error';
-var FLASH_VERSION = '10.1.0';
-
-var VPAIDFLASHClient = (function () {
-    function VPAIDFLASHClient(vpaidParentEl, callback) {
-        var swfConfig = arguments[2] === undefined ? { data: 'VPAIDFlash.swf', width: 800, height: 400 } : arguments[2];
-
-        var _this = this;
-
-        var params = arguments[3] === undefined ? { wmode: 'transparent', salign: 'tl', align: 'left', allowScriptAccess: 'always', scale: 'noScale', allowFullScreen: 'true', quality: 'high' } : arguments[3];
-        var vpaidOptions = arguments[4] === undefined ? { debug: false, timeout: 10000 } : arguments[4];
-
-        _classCallCheck(this, VPAIDFLASHClient);
-
-        if (!VPAIDFLASHClient.hasExternalDependencies()) {
-            return onError('no swfobject in global scope. check: https://github.com/swfobject/swfobject or https://code.google.com/p/swfobject/');
-        }
-
-        this._vpaidParentEl = vpaidParentEl;
-        this._flashID = uniqueVPAID();
-        this._destroyed = false;
-        callback = callback || noop;
-
-        swfConfig.width = isPositiveInt(swfConfig.width, 800);
-        swfConfig.height = isPositiveInt(swfConfig.height, 400);
-
-        createElementWithID(vpaidParentEl, this._flashID);
-
-        params.movie = swfConfig.data;
-        params.FlashVars = 'flashid=' + this._flashID + '&handler=' + JSFlashBridge.VPAID_FLASH_HANDLER + '&debug=' + vpaidOptions.debug + '&salign=' + params.salign;
-
-        if (!VPAIDFLASHClient.isSupported()) {
-            return onError('user don\'t support flash or doesn\'t have the minimum required version of flash ' + FLASH_VERSION);
-        }
-
-        this.el = swfobject.createSWF(swfConfig, params, this._flashID);
-
-        if (!this.el) {
-            return onError('swfobject failed to create object in element');
-        }
-
-        var handler = callbackTimeout(vpaidOptions.timeout, function (err, data) {
-            $loadPendedAdUnit.call(_this);
-            callback(err, data);
-        }, function () {
-            callback('vpaid flash load timeout ' + vpaidOptions.timeout);
-        });
-
-        this._flash = new JSFlashBridge(this.el, swfConfig.data, this._flashID, swfConfig.width, swfConfig.height, handler);
-
-        function onError(error) {
-            setTimeout(function () {
-                callback(new Error(error));
-            }, 0);
-            return this;
-        }
-    }
-
-    _createClass(VPAIDFLASHClient, [{
-        key: 'destroy',
-        value: function destroy() {
-            this._destroyAdUnit();
-
-            if (this._flash) {
-                this._flash.destroy();
-                this._flash = null;
-            }
-            this.el = null;
-            this._destroyed = true;
-        }
-    }, {
-        key: 'isDestroyed',
-        value: function isDestroyed() {
-            return this._destroyed;
-        }
-    }, {
-        key: '_destroyAdUnit',
-        value: function _destroyAdUnit() {
-            delete this._loadLater;
-
-            if (this._adUnitLoad) {
-                this._adUnitLoad = null;
-                this._flash.removeCallback(this._adUnitLoad);
-            }
-
-            if (this._adUnit) {
-                this._adUnit._destroy();
-                this._adUnit = null;
-            }
-        }
-    }, {
-        key: 'loadAdUnit',
-        value: function loadAdUnit(adURL, callback) {
-            var _this2 = this;
-
-            $throwIfDestroyed.call(this);
-
-            if (this._adUnit) {
-                this._destroyAdUnit();
-            }
-
-            if (this._flash.isReady()) {
-                this._adUnitLoad = function (err, message) {
-                    if (!err) {
-                        _this2._adUnit = new VPAIDAdUnit(_this2._flash);
-                    }
-                    _this2._adUnitLoad = null;
-                    callback(err, _this2._adUnit);
-                };
-
-                this._flash.callFlashMethod('loadAdUnit', [adURL], this._adUnitLoad);
-            } else {
-                this._loadLater = { url: adURL, callback: callback };
-            }
-        }
-    }, {
-        key: 'unloadAdUnit',
-        value: function unloadAdUnit() {
-            var callback = arguments[0] === undefined ? undefined : arguments[0];
-
-            $throwIfDestroyed.call(this);
-
-            this._destroyAdUnit();
-            this._flash.callFlashMethod('unloadAdUnit', [], callback);
-        }
-    }, {
-        key: 'getFlashID',
-        value: function getFlashID() {
-            $throwIfDestroyed.call(this);
-            return this._flash.getFlashID();
-        }
-    }, {
-        key: 'getFlashURL',
-        value: function getFlashURL() {
-            $throwIfDestroyed.call(this);
-            return this._flash.getFlashURL();
-        }
-    }]);
-
-    return VPAIDFLASHClient;
-})();
-
-setStaticProperty('isSupported', function () {
-    return VPAIDFLASHClient.hasExternalDependencies() && swfobject.hasFlashPlayerVersion(FLASH_VERSION);
-});
-
-setStaticProperty('hasExternalDependencies', function () {
-    return !!window.swfobject;
-});
-
-function $throwIfDestroyed() {
-    if (this._destroyed) {
-        throw new error('VPAIDFlashToJS is destroyed!');
-    }
-}
-
-function $loadPendedAdUnit() {
-    if (this._loadLater) {
-        this.loadAdUnit(this._loadLater.url, this._loadLater.callback);
-        delete this._loadLater;
-    }
-}
-
-function setStaticProperty(propertyName, value) {
-    Object.defineProperty(VPAIDFLASHClient, propertyName, {
-        writable: false,
-        configurable: false,
-        value: value
-    });
-}
-
-window.VPAIDFLASHClient = VPAIDFLASHClient;
-module.exports = VPAIDFLASHClient;
-
-},{"./VPAIDAdUnit":2,"./jsFlashBridge":4,"./utils":7}],4:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-var unique = require('./utils').unique;
-var isPositiveInt = require('./utils').isPositiveInt;
-var stringEndsWith = require('./utils').stringEndsWith;
-var SingleValueRegistry = require('./registry').SingleValueRegistry;
-var MultipleValuesRegistry = require('./registry').MultipleValuesRegistry;
-var registry = require('./jsFlashBridgeRegistry');
-var VPAID_FLASH_HANDLER = 'vpaid_video_flash_handler';
-var ERROR = 'AdError';
-
-var JSFlashBridge = (function () {
-    function JSFlashBridge(el, flashURL, flashID, width, height, loadHandShake) {
-        _classCallCheck(this, JSFlashBridge);
-
-        this._el = el;
-        this._flashID = flashID;
-        this._flashURL = flashURL;
-        this._width = width;
-        this._height = height;
-        this._handlers = new MultipleValuesRegistry();
-        this._callbacks = new SingleValueRegistry();
-        this._uniqueMethodIdentifier = unique(this._flashID);
-        this._ready = false;
-        this._handShakeHandler = loadHandShake;
-
-        registry.addInstance(this._flashID, this);
-    }
-
-    _createClass(JSFlashBridge, [{
-        key: 'on',
-        value: function on(eventName, callback) {
-            this._handlers.add(eventName, callback);
-        }
-    }, {
-        key: 'off',
-        value: function off(eventName, callback) {
-            return this._handlers.remove(eventName, callback);
-        }
-    }, {
-        key: 'offEvent',
-        value: function offEvent(eventName) {
-            return this._handlers.removeByKey(eventName);
-        }
-    }, {
-        key: 'offAll',
-        value: function offAll() {
-            return this._handlers.removeAll();
-        }
-    }, {
-        key: 'callFlashMethod',
-        value: function callFlashMethod(methodName) {
-            var args = arguments[1] === undefined ? [] : arguments[1];
-            var callback = arguments[2] === undefined ? undefined : arguments[2];
-
-            var callbackID = '';
-            // if no callback, some methods the return is void so they don't need callback
-            if (callback) {
-                callbackID = this._uniqueMethodIdentifier() + '_' + methodName;
-                this._callbacks.add(callbackID, callback);
-            }
-
-            try {
-                //methods are created by ExternalInterface.addCallback in as3 code, if for some reason it failed
-                //this code will throw an error
-                this._el[methodName]([callbackID].concat(args));
-            } catch (e) {
-                if (callback) {
-                    $asyncCallback.call(this, callbackID, e);
-                } else {
-
-                    //if there isn't any callback to return error use error event handler
-                    this._trigger(ERROR, e);
-                }
-            }
-        }
-    }, {
-        key: 'removeCallback',
-        value: function removeCallback(callback) {
-            return this._callbacks.removeByValue(callback);
-        }
-    }, {
-        key: 'removeCallbackByMethodName',
-        value: function removeCallbackByMethodName(suffix) {
-            var _this = this;
-
-            this._callbacks.filterKeys(function (key) {
-                return stringEndsWith(key, suffix);
-            }).forEach(function (key) {
-                _this._callbacks.remove(key);
-            });
-        }
-    }, {
-        key: 'removeAllCallbacks',
-        value: function removeAllCallbacks() {
-            return this._callbacks.removeAll();
-        }
-    }, {
-        key: '_trigger',
-        value: function _trigger(eventName, event) {
-            var _this2 = this;
-
-            this._handlers.get(eventName).forEach(function (callback) {
-                //clickThru has to be sync, if not will be block by the popupblocker
-                if (eventName === 'AdClickThru') {
-                    callback(event);
-                } else {
-                    setTimeout(function () {
-                        if (_this2._handlers.get(eventName).length > 0) {
-                            callback(event);
-                        }
-                    }, 0);
-                }
-            });
-        }
-    }, {
-        key: '_callCallback',
-        value: function _callCallback(methodName, callbackID, err, result) {
-
-            var callback = this._callbacks.get(callbackID);
-
-            //not all methods callback's are mandatory
-            //but if there exist an error, fire the error event
-            if (!callback) {
-                if (err && callbackID === '') {
-                    this.trigger(ERROR, err);
-                }
-                return;
-            }
-
-            $asyncCallback.call(this, callbackID, err, result);
-        }
-    }, {
-        key: '_handShake',
-        value: function _handShake(err, data) {
-            this._ready = true;
-            if (this._handShakeHandler) {
-                this._handShakeHandler(err, data);
-                delete this._handShakeHandler;
-            }
-        }
-    }, {
-        key: 'getSize',
-
-        //methods like properties specific to this implementation of VPAID
-        value: function getSize() {
-            return { width: this._width, height: this._height };
-        }
-    }, {
-        key: 'setSize',
-        value: function setSize(newWidth, newHeight) {
-            this._width = isPositiveInt(newWidth, this._width);
-            this._height = isPositiveInt(newHeight, this._height);
-            this._el.setAttribute('width', this._width);
-            this._el.setAttribute('height', this._height);
-        }
-    }, {
-        key: 'getWidth',
-        value: function getWidth() {
-            return this._width;
-        }
-    }, {
-        key: 'setWidth',
-        value: function setWidth(newWidth) {
-            this.setSize(newWidth, this._height);
-        }
-    }, {
-        key: 'getHeight',
-        value: function getHeight() {
-            return this._height;
-        }
-    }, {
-        key: 'setHeight',
-        value: function setHeight(newHeight) {
-            this.setSize(this._width, newHeight);
-        }
-    }, {
-        key: 'getFlashID',
-        value: function getFlashID() {
-            return this._flashID;
-        }
-    }, {
-        key: 'getFlashURL',
-        value: function getFlashURL() {
-            return this._flashURL;
-        }
-    }, {
-        key: 'isReady',
-        value: function isReady() {
-            return this._ready;
-        }
-    }, {
-        key: 'destroy',
-        value: function destroy() {
-            this.offAll();
-            this.removeAllCallbacks();
-            registry.removeInstanceByID(this._flashID);
-            if (this._el.parentElement) {
-                this._el.parentElement.removeChild(this._el);
-            }
-        }
-    }]);
-
-    return JSFlashBridge;
-})();
-
-exports.JSFlashBridge = JSFlashBridge;
-
-function $asyncCallback(callbackID, err, result) {
-    var _this3 = this;
-
-    setTimeout(function () {
-        var callback = _this3._callbacks.get(callbackID);
-        if (callback) {
-            _this3._callbacks.remove(callbackID);
-            callback(err, result);
-        }
-    }, 0);
-}
-
-Object.defineProperty(JSFlashBridge, 'VPAID_FLASH_HANDLER', {
-    writable: false,
-    configurable: false,
-    value: VPAID_FLASH_HANDLER
-});
-
-window[VPAID_FLASH_HANDLER] = function (flashID, type, event, callID, error, data) {
-    var instance = registry.getInstanceByID(flashID);
-    if (!instance) return;
-    if (event === 'handShake') {
-        instance._handShake(error, data);
-    } else {
-        if (type !== 'event') {
-            instance._callCallback(event, callID, error, data);
-        } else {
-            instance._trigger(event, data);
-        }
-    }
-};
-
-},{"./jsFlashBridgeRegistry":5,"./registry":6,"./utils":7}],5:[function(require,module,exports){
-'use strict';
-
-var SingleValueRegistry = require('./registry').SingleValueRegistry;
-var instances = new SingleValueRegistry();
-
-var JSFlashBridgeRegistry = {};
-Object.defineProperty(JSFlashBridgeRegistry, 'addInstance', {
-    writable: false,
-    configurable: false,
-    value: function value(id, instance) {
-        instances.add(id, instance);
-    }
-});
-
-Object.defineProperty(JSFlashBridgeRegistry, 'getInstanceByID', {
-    writable: false,
-    configurable: false,
-    value: function value(id) {
-        return instances.get(id);
-    }
-});
-
-Object.defineProperty(JSFlashBridgeRegistry, 'removeInstanceByID', {
-    writable: false,
-    configurable: false,
-    value: function value(id) {
-        return instances.remove(id);
-    }
-});
-
-module.exports = JSFlashBridgeRegistry;
-
-},{"./registry":6}],6:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-
-var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-var MultipleValuesRegistry = (function () {
-    function MultipleValuesRegistry() {
-        _classCallCheck(this, MultipleValuesRegistry);
-
-        this._registries = {};
-    }
-
-    _createClass(MultipleValuesRegistry, [{
-        key: 'add',
-        value: function add(id, value) {
-            if (!this._registries[id]) {
-                this._registries[id] = [];
-            }
-            if (this._registries[id].indexOf(value) === -1) {
-                this._registries[id].push(value);
-            }
-        }
-    }, {
-        key: 'get',
-        value: function get(id) {
-            return this._registries[id] || [];
-        }
-    }, {
-        key: 'filterKeys',
-        value: function filterKeys(handler) {
-            return Object.keys(this._registries).filter(handler);
-        }
-    }, {
-        key: 'findByValue',
-        value: function findByValue(value) {
-            var _this = this;
-
-            var keys = Object.keys(this._registries).filter(function (key) {
-                return _this._registries[key].indexOf(value) !== -1;
-            });
-
-            return keys;
-        }
-    }, {
-        key: 'remove',
-        value: function remove(key, value) {
-            if (!this._registries[key]) {
-                return;
-            }
-
-            var index = this._registries[key].indexOf(value);
-
-            if (index < 0) {
-                return;
-            }
-            return this._registries[key].splice(index, 1);
-        }
-    }, {
-        key: 'removeByKey',
-        value: function removeByKey(id) {
-            var old = this._registries[id];
-            delete this._registries[id];
-            return old;
-        }
-    }, {
-        key: 'removeByValue',
-        value: function removeByValue(value) {
-            var _this2 = this;
-
-            var keys = this.findByValue(value);
-            return keys.map(function (key) {
-                return _this2.remove(key, value);
-            });
-        }
-    }, {
-        key: 'removeAll',
-        value: function removeAll() {
-            var old = this._registries;
-            this._registries = {};
-            return old;
-        }
-    }, {
-        key: 'size',
-        value: function size() {
-            return Object.keys(this._registries).length;
-        }
-    }]);
-
-    return MultipleValuesRegistry;
-})();
-
-exports.MultipleValuesRegistry = MultipleValuesRegistry;
-
-var SingleValueRegistry = (function () {
-    function SingleValueRegistry() {
-        _classCallCheck(this, SingleValueRegistry);
-
-        this._registries = {};
-    }
-
-    _createClass(SingleValueRegistry, [{
-        key: 'add',
-        value: function add(id, value) {
-            this._registries[id] = value;
-        }
-    }, {
-        key: 'get',
-        value: function get(id) {
-            return this._registries[id];
-        }
-    }, {
-        key: 'filterKeys',
-        value: function filterKeys(handler) {
-            return Object.keys(this._registries).filter(handler);
-        }
-    }, {
-        key: 'findByValue',
-        value: function findByValue(value) {
-            var _this3 = this;
-
-            var keys = Object.keys(this._registries).filter(function (key) {
-                return _this3._registries[key] === value;
-            });
-
-            return keys;
-        }
-    }, {
-        key: 'remove',
-        value: function remove(id) {
-            var old = this._registries[id];
-            delete this._registries[id];
-            return old;
-        }
-    }, {
-        key: 'removeByValue',
-        value: function removeByValue(value) {
-            var _this4 = this;
-
-            var keys = this.findByValue(value);
-            return keys.map(function (key) {
-                return _this4.remove(key);
-            });
-        }
-    }, {
-        key: 'removeAll',
-        value: function removeAll() {
-            var old = this._registries;
-            this._registries = {};
-            return old;
-        }
-    }, {
-        key: 'size',
-        value: function size() {
-            return Object.keys(this._registries).length;
-        }
-    }]);
-
-    return SingleValueRegistry;
-})();
-
-exports.SingleValueRegistry = SingleValueRegistry;
-
-},{}],7:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, '__esModule', {
-    value: true
-});
-exports.unique = unique;
-exports.noop = noop;
-exports.callbackTimeout = callbackTimeout;
-exports.createElementWithID = createElementWithID;
-exports.isPositiveInt = isPositiveInt;
-exports.stringEndsWith = stringEndsWith;
-
-function unique(prefix) {
-    var count = -1;
-    return function (f) {
-        return prefix + '_' + ++count;
-    };
-}
-
-function noop() {}
-
-function callbackTimeout(timer, onSuccess, onTimeout) {
-
-    var timeout = setTimeout(function () {
-
-        onSuccess = noop;
-        onTimeout();
-    }, timer);
-
-    return function () {
-        clearTimeout(timeout);
-        onSuccess.apply(this, arguments);
-    };
-}
-
-function createElementWithID(parent, id) {
-    var nEl = document.createElement('div');
-    nEl.id = id;
-    parent.innerHTML = '';
-    parent.appendChild(nEl);
-    return nEl;
-}
-
-function isPositiveInt(newVal, oldVal) {
-    return !isNaN(parseFloat(newVal)) && isFinite(newVal) && newVal > 0 ? newVal : oldVal;
-}
-
-var endsWith = (function () {
-    if (String.prototype.endsWith) return String.prototype.endsWith;
-    return function endsWith(searchString, position) {
-        var subjectString = this.toString();
-        if (position === undefined || position > subjectString.length) {
-            position = subjectString.length;
-        }
-        position -= searchString.length;
-        var lastIndex = subjectString.indexOf(searchString, position);
-        return lastIndex !== -1 && lastIndex === position;
-    };
-})();
-
-function stringEndsWith(string, search) {
-    return endsWith.call(string, search);
-}
-
-},{}]},{},[3])
-
-
-//# sourceMappingURL=VPAIDFLASHClient.js.map
-;
-/**
- There is a bug on android 4.2 ont the way it parses string
- The code bellow fixes the problem if there is a problem
- */
-(function () {
- var parseNum;
- if(parseInt('09') !== 9) {
-  parseNum = window.parseInt;
-  window.parseInt = function(str) {
-   if(typeof str === 'string' && !/^(\s+)?0+(\s+)?$/.test(str)){
-    //We remove the 0 from the left of the number
-    return parseNum(str.replace(/^0+/, ''));
-   }
-
-   return parseNum(str);
-  };
- }
-})();
-;
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-'use strict';
-
-var METHODS = [
-    'handshakeVersion',
-    'initAd',
-    'startAd',
-    'stopAd',
-    'skipAd', // VPAID 2.0 new method
-    'resizeAd',
-    'pauseAd',
-    'resumeAd',
-    'expandAd',
-    'collapseAd',
-    'subscribe',
-    'unsubscribe'
-];
-
-var EVENTS = [
-    'AdLoaded',
-    'AdStarted',
-    'AdStopped',
-    'AdSkipped',
-    'AdSkippableStateChange', // VPAID 2.0 new event
-    'AdSizeChange', // VPAID 2.0 new event
-    'AdLinearChange',
-    'AdDurationChange', // VPAID 2.0 new event
-    'AdExpandedChange',
-    'AdRemainingTimeChange', // [Deprecated in 2.0] but will be still fired for backwards compatibility
-    'AdVolumeChange',
-    'AdImpression',
-    'AdVideoStart',
-    'AdVideoFirstQuartile',
-    'AdVideoMidpoint',
-    'AdVideoThirdQuartile',
-    'AdVideoComplete',
-    'AdClickThru',
-    'AdInteraction', // VPAID 2.0 new event
-    'AdUserAcceptInvitation',
-    'AdUserMinimize',
-    'AdUserClose',
-    'AdPaused',
-    'AdPlaying',
-    'AdLog',
-    'AdError'
-];
-
-var GETTERS = [
-    'getAdLinear',
-    'getAdWidth', // VPAID 2.0 new getter
-    'getAdHeight', // VPAID 2.0 new getter
-    'getAdExpanded',
-    'getAdSkippableState', // VPAID 2.0 new getter
-    'getAdRemainingTime',
-    'getAdDuration', // VPAID 2.0 new getter
-    'getAdVolume',
-    'getAdCompanions', // VPAID 2.0 new getter
-    'getAdIcons' // VPAID 2.0 new getter
-];
-
-var SETTERS = [
-    'setAdVolume'
-];
-
-
-/**
- * This callback is displayed as global member. The callback use nodejs error-first callback style
- * @callback NodeStyleCallback
- * @param {string|null}
- * @param {undefined|object}
- */
-
-
-/**
- * IVPAIDAdUnit
- *
- * @class
- *
- * @param {object} creative
- * @param {HTMLElement} el
- * @param {HTMLVideoElement} video
- */
-function IVPAIDAdUnit(creative, el, video) {}
-
-
-/**
- * handshakeVersion
- *
- * @param {string} VPAIDVersion
- * @param {nodeStyleCallback} callback
- */
-IVPAIDAdUnit.prototype.handshakeVersion = function (VPAIDVersion, callback) {};
-
-/**
- * initAd
- *
- * @param {number} width
- * @param {number} height
- * @param {string} viewMode can be 'normal', 'thumbnail' or 'fullscreen'
- * @param {number} desiredBitrate indicates the desired bitrate in kbps
- * @param {object} [creativeData] used for additional initialization data
- * @param {object} [environmentVars] used for passing implementation-specific of js version
- * @param {NodeStyleCallback} callback
- */
-IVPAIDAdUnit.prototype.initAd = function(width, height, viewMode, desiredBitrate, creativeData, environmentVars, callback) {};
-
-/**
- * startAd
- *
- * @param {nodeStyleCallback} callback
- */
-IVPAIDAdUnit.prototype.startAd = function(callback) {};
-
-/**
- * stopAd
- *
- * @param {nodeStyleCallback} callback
- */
-IVPAIDAdUnit.prototype.stopAd = function(callback) {};
-
-/**
- * skipAd
- *
- * @param {nodeStyleCallback} callback
- */
-IVPAIDAdUnit.prototype.skipAd = function(callback) {};
-
-/**
- * resizeAd
- *
- * @param {nodeStyleCallback} callback
- */
-IVPAIDAdUnit.prototype.resizeAd = function(width, height, viewMode, callback) {};
-
-/**
- * pauseAd
- *
- * @param {nodeStyleCallback} callback
- */
-IVPAIDAdUnit.prototype.pauseAd = function(callback) {};
-
-/**
- * resumeAd
- *
- * @param {nodeStyleCallback} callback
- */
-IVPAIDAdUnit.prototype.resumeAd = function(callback) {};
-
-/**
- * expandAd
- *
- * @param {nodeStyleCallback} callback
- */
-IVPAIDAdUnit.prototype.expandAd = function(callback) {};
-
-/**
- * collapseAd
- *
- * @param {nodeStyleCallback} callback
- */
-IVPAIDAdUnit.prototype.collapseAd = function(callback) {};
-
-/**
- * subscribe
- *
- * @param {string} event
- * @param {nodeStyleCallback} handler
- * @param {object} context
- */
-IVPAIDAdUnit.prototype.subscribe = function(event, handler, context) {};
-
-/**
- * startAd
- *
- * @param {string} event
- * @param {function} handler
- */
-IVPAIDAdUnit.prototype.unsubscribe = function(event, handler) {};
-
-
-
-/**
- * getAdLinear
- *
- * @param {nodeStyleCallback} callback
- */
-IVPAIDAdUnit.prototype.getAdLinear = function(callback) {};
-
-/**
- * getAdWidth
- *
- * @param {nodeStyleCallback} callback
- */
-IVPAIDAdUnit.prototype.getAdWidth = function(callback) {};
-
-/**
- * getAdHeight
- *
- * @param {nodeStyleCallback} callback
- */
-IVPAIDAdUnit.prototype.getAdHeight = function(callback) {};
-
-/**
- * getAdExpanded
- *
- * @param {nodeStyleCallback} callback
- */
-IVPAIDAdUnit.prototype.getAdExpanded = function(callback) {};
-
-/**
- * getAdSkippableState
- *
- * @param {nodeStyleCallback} callback
- */
-IVPAIDAdUnit.prototype.getAdSkippableState = function(callback) {};
-
-/**
- * getAdRemainingTime
- *
- * @param {nodeStyleCallback} callback
- */
-IVPAIDAdUnit.prototype.getAdRemainingTime = function(callback) {};
-
-/**
- * getAdDuration
- *
- * @param {nodeStyleCallback} callback
- */
-IVPAIDAdUnit.prototype.getAdDuration = function(callback) {};
-
-/**
- * getAdVolume
- *
- * @param {nodeStyleCallback} callback
- */
-IVPAIDAdUnit.prototype.getAdVolume = function(callback) {};
-
-/**
- * getAdCompanions
- *
- * @param {nodeStyleCallback} callback
- */
-IVPAIDAdUnit.prototype.getAdCompanions = function(callback) {};
-
-/**
- * getAdIcons
- *
- * @param {nodeStyleCallback} callback
- */
-IVPAIDAdUnit.prototype.getAdIcons = function(callback) {};
-
-/**
- * setAdVolume
- *
- * @param {number} volume
- * @param {nodeStyleCallback} callback
- */
-IVPAIDAdUnit.prototype.setAdVolume = function(volume, callback) {};
-
-addStaticToInterface(IVPAIDAdUnit, 'METHODS', METHODS);
-addStaticToInterface(IVPAIDAdUnit, 'GETTERS', GETTERS);
-addStaticToInterface(IVPAIDAdUnit, 'SETTERS', SETTERS);
-addStaticToInterface(IVPAIDAdUnit, 'EVENTS',  EVENTS);
-
-
-var VPAID1_METHODS = METHODS.filter(function(method) {
-    return ['skipAd'].indexOf(method) === -1;
-});
-
-addStaticToInterface(IVPAIDAdUnit, 'checkVPAIDInterface', function checkVPAIDInterface (creative) {
-    var result = VPAID1_METHODS.every(function(key) {
-        return typeof creative[key] === 'function';
-    });
-    return result;
-});
-
-module.exports = IVPAIDAdUnit;
-
-function addStaticToInterface(Interface, name, value) {
-    Object.defineProperty(Interface, name, {
-        writable: false,
-        configurable: false,
-        value: value
-    });
-}
-
-
-},{}],2:[function(require,module,exports){
-'use strict';
-
-var IVPAIDAdUnit = require('./IVPAIDAdUnit');
-var Subscriber = require('./subscriber');
-var checkVPAIDInterface = IVPAIDAdUnit.checkVPAIDInterface;
-var utils = require('./utils');
-var METHODS = IVPAIDAdUnit.METHODS;
-var ERROR = 'AdError';
-var AD_CLICK = 'AdClickThru';
-var FILTERED_EVENTS = IVPAIDAdUnit.EVENTS.filter(function (event) {
-    return event != AD_CLICK;
-});
-
-/**
- * This callback is displayed as global member. The callback use nodejs error-first callback style
- * @callback NodeStyleCallback
- * @param {string|null}
- * @param {undefined|object}
- */
-
-
-/**
- * VPAIDAdUnit
- * @class
- *
- * @param VPAIDCreative
- * @param {HTMLElement} [el] this will be used in initAd environmentVars.slot if defined
- * @param {HTMLVideoElement} [video] this will be used in initAd environmentVars.videoSlot if defined
- */
-function VPAIDAdUnit(VPAIDCreative, el, video, iframe) {
-    this._isValid = checkVPAIDInterface(VPAIDCreative);
-    if (this._isValid) {
-        this._creative = VPAIDCreative;
-        this._el = el;
-        this._videoEl = video;
-        this._iframe = iframe;
-        this._subscribers = new Subscriber();
-        $addEventsSubscribers.call(this);
-    }
-}
-
-VPAIDAdUnit.prototype = Object.create(IVPAIDAdUnit.prototype);
-
-/**
- * isValidVPAIDAd will return if the VPAIDCreative passed in constructor is valid or not
- *
- * @return {boolean}
- */
-VPAIDAdUnit.prototype.isValidVPAIDAd = function isValidVPAIDAd() {
-    return this._isValid;
-};
-
-IVPAIDAdUnit.METHODS.forEach(function(method) {
-    //NOTE: this methods arguments order are implemented differently from the spec
-    var ignores = [
-        'subscribe',
-        'unsubscribe',
-        'initAd'
-    ];
-
-    if (ignores.indexOf(method) !== -1) return;
-
-    VPAIDAdUnit.prototype[method] = function () {
-        var ariaty = IVPAIDAdUnit.prototype[method].length;
-        // TODO avoid leaking arguments
-        // https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#32-leaking-arguments
-        var args = Array.prototype.slice.call(arguments);
-        var callback = (ariaty === args.length) ? args.pop() : undefined;
-
-        setTimeout(function () {
-            var result, error = null;
-            try {
-                result = this._creative[method].apply(this._creative, args);
-            } catch(e) {
-                error = e;
-            }
-
-            callOrTriggerEvent(callback, this._subscribers, error, result);
-        }.bind(this), 0);
-    };
-});
-
-
-/**
- * initAd concreate implementation
- *
- * @param {number} width
- * @param {number} height
- * @param {string} viewMode can be 'normal', 'thumbnail' or 'fullscreen'
- * @param {number} desiredBitrate indicates the desired bitrate in kbps
- * @param {object} [creativeData] used for additional initialization data
- * @param {object} [environmentVars] used for passing implementation-specific of js version, if el & video was used in constructor slot & videoSlot will be added to the object
- * @param {NodeStyleCallback} callback
- */
-VPAIDAdUnit.prototype.initAd = function initAd(width, height, viewMode, desiredBitrate, creativeData, environmentVars, callback) {
-    creativeData = creativeData || {};
-    environmentVars = utils.extend({
-        slot: this._el,
-        videoSlot: this._videoEl
-    }, environmentVars || {});
-
-    setTimeout(function () {
-        var error;
-        try {
-            this._creative.initAd(width, height, viewMode, desiredBitrate, creativeData, environmentVars);
-        } catch (e) {
-            error = e;
-        }
-
-        callOrTriggerEvent(callback, this._subscribers, error);
-    }.bind(this), 0);
-};
-
-/**
- * subscribe
- *
- * @param {string} event
- * @param {nodeStyleCallback} handler
- * @param {object} context
- */
-VPAIDAdUnit.prototype.subscribe = function subscribe(event, handler, context) {
-    this._subscribers.subscribe(handler, event, context);
-};
-
-
-/**
- * unsubscribe
- *
- * @param {string} event
- * @param {nodeStyleCallback} handler
- */
-VPAIDAdUnit.prototype.unsubscribe = function unsubscribe(event, handler) {
-    this._subscribers.unsubscribe(handler, event);
-};
-
-//alias
-VPAIDAdUnit.prototype.on = VPAIDAdUnit.prototype.subscribe;
-VPAIDAdUnit.prototype.off = VPAIDAdUnit.prototype.unsubscribe;
-
-IVPAIDAdUnit.GETTERS.forEach(function(getter) {
-    VPAIDAdUnit.prototype[getter] = function (callback) {
-        setTimeout(function () {
-
-            var result, error = null;
-            try {
-                result = this._creative[getter]();
-            } catch(e) {
-                error = e;
-            }
-
-            callOrTriggerEvent(callback, this._subscribers, error, result);
-        }.bind(this), 0);
-    };
-});
-
-/**
- * setAdVolume
- *
- * @param volume
- * @param {nodeStyleCallback} callback
- */
-VPAIDAdUnit.prototype.setAdVolume = function setAdVolume(volume, callback) {
-    setTimeout(function () {
-
-        var result, error = null;
-        try {
-            this._creative.setAdVolume(volume);
-            result = this._creative.getAdVolume();
-        } catch(e) {
-            error = e;
-        }
-
-        if (!error) {
-            error = utils.validate(result === volume, 'failed to apply volume: ' + volume);
-        }
-        callOrTriggerEvent(callback, this._subscribers, error, result);
-    }.bind(this), 0);
-};
-
-VPAIDAdUnit.prototype._destroy = function destroy() {
-    this.stopAd();
-    this._subscribers.unsubscribeAll();
-};
-
-function $addEventsSubscribers() {
-    // some ads implement
-    // so they only handle one subscriber
-    // to handle this we create our one
-    FILTERED_EVENTS.forEach(function (event) {
-        this._creative.subscribe($trigger.bind(this, event), event);
-    }.bind(this));
-
-    // map the click event to be an object instead of depending of the order of the arguments
-    // and to be consistent with the flash
-    this._creative.subscribe($clickThruHook.bind(this), AD_CLICK);
-
-    // because we are adding the element inside the iframe
-    // the user is not able to click in the video
-    if (this._videoEl) {
-        var documentElement = this._iframe.contentDocument.documentElement;
-        var videoEl = this._videoEl;
-        documentElement.addEventListener('click', function(e) {
-            if (e.target === documentElement) {
-                videoEl.click();
-            }
-        });
-    }
-}
-
-function $clickThruHook(url, id, playerHandles) {
-    this._subscribers.triggerSync(AD_CLICK, {url: url, id: id, playerHandles: playerHandles});
-}
-
-function $trigger(event) {
-    // TODO avoid leaking arguments
-    // https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#32-leaking-arguments
-    this._subscribers.trigger(event, Array.prototype.slice(arguments, 1));
-}
-
-function callOrTriggerEvent(callback, subscribers, error, result) {
-    if (callback) {
-        callback(error, result);
-    } else if (error) {
-        subscribers.trigger(ERROR, error);
-    }
-}
-
-module.exports = VPAIDAdUnit;
-
-
-},{"./IVPAIDAdUnit":1,"./subscriber":4,"./utils":5}],3:[function(require,module,exports){
-'use strict';
-
-
-var utils = require('./utils');
-var unique = utils.unique('vpaidIframe');
-var VPAIDAdUnit = require('./VPAIDAdUnit');
-var defaultTemplate = "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n</head>\n<body>\n    <script type=\"text/javascript\" src=\"{{iframeURL_JS}}\"></script>\n    <script>\n        parent.postMessage('{\"event\": \"ready\", \"id\": \"{{iframeID}}\"}', window.location.origin);\n    </script>\n    <div class=\"ad-element\">\n    </div>\n</body>\n</html>\n";
-
-var AD_STOPPED = 'AdStopped';
-
-/**
- * This callback is displayed as global member. The callback use nodejs error-first callback style
- * @callback NodeStyleCallback
- * @param {string|null}
- * @param {undefined|object}
- */
-
-/**
- * VPAIDHTML5Client
- * @class
- *
- * @param {HTMLElement} el that will contain the iframe to load adUnit and a el to add to adUnit slot
- * @param {HTMLVideoElement} video default video element to be used by adUnit
- * @param {object} [templateConfig] template: html template to be used instead of the default, extraOptions: to be used when rendering the template
- * @param {object} [vpaidOptions] timeout: when loading adUnit
- */
-function VPAIDHTML5Client(el, video, templateConfig, vpaidOptions) {
-    templateConfig = templateConfig || {};
-
-    this._id = unique();
-    this._destroyed = false;
-
-    this._frameContainer = utils.createElementInEl(el, 'div');
-    this._videoEl = video;
-    this._vpaidOptions = vpaidOptions || {timeout: 10000};
-
-    this._templateConfig = {
-        template: templateConfig.template || defaultTemplate,
-        extraOptions: templateConfig.extraOptions || {}
-    };
-
-}
-
-/**
- * destroy
- *
- */
-VPAIDHTML5Client.prototype.destroy = function destroy() {
-    if (this._destroyed) {
-        return;
-    }
-    this._destroyed = true;
-    $unloadPreviousAdUnit.call(this);
-};
-
-/**
- * isDestroyed
- *
- * @return {boolean}
- */
-VPAIDHTML5Client.prototype.isDestroyed = function isDestroyed() {
-    return this._destroyed;
-};
-
-/**
- * loadAdUnit
- *
- * @param {string} adURL url of the js of the adUnit
- * @param {nodeStyleCallback} callback
- */
-VPAIDHTML5Client.prototype.loadAdUnit = function loadAdUnit(adURL, callback) {
-    $throwIfDestroyed.call(this);
-    $unloadPreviousAdUnit.call(this);
-
-    var frame = utils.createIframeWithContent(
-        this._frameContainer,
-        this._templateConfig.template,
-        utils.extend({
-            iframeURL_JS: adURL,
-            iframeID: this.getID()
-        }, this._templateConfig.extraOptions)
-    );
-    this._frame = frame;
-
-    this._onLoad = utils.callbackTimeout(
-        this._vpaidOptions.timeout,
-        onLoad.bind(this),
-        onTimeout.bind(this)
-    );
-
-    window.addEventListener('message', this._onLoad);
-
-    function onLoad (e) {
-        /*jshint validthis: false */
-        //don't clear timeout
-        if (e.origin !== window.location.origin) return;
-        var result = JSON.parse(e.data);
-
-        //don't clear timeout
-        if (result.id !== this.getID()) return;
-
-        var adUnit, error, createAd;
-        if (!this._frame.contentWindow) {
-
-            error = 'the iframe is not anymore in the DOM tree';
-
-        } else {
-            createAd = this._frame.contentWindow.getVPAIDAd;
-            error = utils.validate(typeof createAd === 'function', 'the ad didn\'t return a function to create an ad');
-        }
-
-        if (!error) {
-            var adEl = this._frame.contentWindow.document.querySelector('.ad-element');
-            adUnit = new VPAIDAdUnit(createAd(), adEl, this._videoEl, this._frame);
-            adUnit.subscribe(AD_STOPPED, $adDestroyed.bind(this));
-            error = utils.validate(adUnit.isValidVPAIDAd(), 'the add is not fully complaint with VPAID specification');
-        }
-
-        this._adUnit = adUnit;
-        $destroyLoadListener.call(this);
-        callback(error, error ? null : adUnit);
-
-        //clear timeout
-        return true;
-    }
-
-    function onTimeout() {
-        callback('timeout', null);
-    }
-};
-
-/**
- * unloadAdUnit
- *
- */
-VPAIDHTML5Client.prototype.unloadAdUnit = function unloadAdUnit() {
-    $unloadPreviousAdUnit.call(this);
-};
-
-/**
- * getID will return the unique id
- *
- * @return {string}
- */
-VPAIDHTML5Client.prototype.getID = function () {
-    return this._id;
-};
-
-
-/**
- * $removeEl
- *
- * @param {string} key
- */
-function $removeEl(key) {
-    var el = this[key];
-    if (el) {
-        el.remove();
-        delete this[key];
-    }
-}
-
-function $adDestroyed() {
-    $removeAdElements.call(this);
-    delete this._adUnit;
-}
-
-function $unloadPreviousAdUnit() {
-    $removeAdElements.call(this);
-    $destroyAdUnit.call(this);
-}
-
-function $removeAdElements() {
-    $removeEl.call(this, '_frame');
-    $destroyLoadListener.call(this);
-}
-
-/**
- * $destroyLoadListener
- *
- */
-function $destroyLoadListener() {
-    if (this._onLoad) {
-        window.removeEventListener('message', this._onLoad);
-        utils.clearCallbackTimeout(this._onLoad);
-        delete this._onLoad;
-    }
-}
-
-
-function $destroyAdUnit() {
-    if (this._adUnit) {
-        this._adUnit.stopAd();
-        delete this._adUnit;
-    }
-}
-
-/**
- * $throwIfDestroyed
- *
- */
-function $throwIfDestroyed() {
-    if (this._destroyed) {
-        throw new Error ('VPAIDHTML5Client already destroyed!');
-    }
-}
-
-module.exports = VPAIDHTML5Client;
-window.VPAIDHTML5Client = VPAIDHTML5Client;
-
-
-},{"./VPAIDAdUnit":2,"./utils":5}],4:[function(require,module,exports){
-'use strict';
-
-function Subscriber() {
-    this._subscribers = {};
-}
-
-Subscriber.prototype.subscribe = function subscribe(handler, eventName, context) {
-    this.get(eventName).push({handler: handler, context: context});
-};
-
-Subscriber.prototype.unsubscribe = function unsubscribe(handler, eventName) {
-    this._subscribers[eventName] = this.get(eventName).filter(function (subscriber) {
-        return handler === subscriber.handler;
-    });
-};
-
-Subscriber.prototype.unsubscribeAll = function unsubscribeAll() {
-    this._subscribers = {};
-};
-
-Subscriber.prototype.trigger = function(eventName, data) {
-    var that = this;
-    that.get(eventName).forEach(function (subscriber) {
-        setTimeout(function () {
-            if (that.get(eventName)) {
-                subscriber.handler.call(subscriber.context, data);
-            }
-        }, 0);
-    });
-};
-
-Subscriber.prototype.triggerSync = function(eventName, data) {
-    this.get(eventName).forEach(function (subscriber) {
-        subscriber.handler.call(subscriber.context, data);
-    });
-};
-
-Subscriber.prototype.get = function get(eventName) {
-    if (!this._subscribers[eventName]) {
-        this._subscribers[eventName] = [];
-    }
-    return this._subscribers[eventName];
-};
-
-module.exports = Subscriber;
-
-
-},{}],5:[function(require,module,exports){
-'use strict';
-
-/**
- * noop a empty function
- */
-function noop() {}
-
-/**
- * validate if is not validate will return an Error with the message
- *
- * @param {boolean} isValid
- * @param {string} message
- */
-function validate(isValid, message) {
-    return isValid ? null : new Error(message);
-}
-
-var timeouts = {};
-/**
- * clearCallbackTimeout
- *
- * @param {function} func handler to remove
- */
-function clearCallbackTimeout(func) {
-    var timeout = timeouts[func];
-    if (timeout) {
-        clearTimeout(timeout);
-        delete timeouts[func];
-    }
-}
-
-/**
- * callbackTimeout if the onSuccess is not called and returns true in the timelimit then onTimeout will be called
- *
- * @param {number} timer
- * @param {function} onSuccess
- * @param {function} onTimeout
- */
-function callbackTimeout(timer, onSuccess, onTimeout) {
-    var callback, timeout;
-
-    timeout = setTimeout(function () {
-        onSuccess = noop;
-        delete timeout[callback];
-        onTimeout();
-    }, timer);
-
-    callback = function () {
-        // TODO avoid leaking arguments
-        // https://github.com/petkaantonov/bluebird/wiki/Optimization-killers#32-leaking-arguments
-        if (onSuccess.apply(this, arguments)) {
-            clearCallbackTimeout(callback);
-        }
-    };
-
-    timeouts[callback] = timeout;
-
-    return callback;
-}
-
-
-/**
- * createElementInEl
- *
- * @param {HTMLElement} parent
- * @param {string} tagName
- * @param {string} id
- */
-function createElementInEl(parent, tagName, id) {
-    var nEl = document.createElement(tagName);
-    if (id) nEl.id = id;
-    parent.appendChild(nEl);
-    return nEl;
-}
-
-/**
- * createIframeWithContent
- *
- * @param {HTMLElement} parent
- * @param {string} template simple template using {{var}}
- * @param {object} data
- */
-function createIframeWithContent(parent, template, data) {
-    var iframe = createIframe(parent);
-    if (!setIframeContent(iframe, simpleTemplate(template, data))) return;
-    return iframe;
-}
-
-/**
- * createIframe
- *
- * @param {HTMLElement} parent
- * @param {string} url
- */
-function createIframe(parent, url) {
-    var nEl = document.createElement('iframe');
-    nEl.src = url || 'about:blank';
-    nEl.width = '100%';
-    nEl.height = '100%';
-    nEl.style.position = 'absolute';
-    nEl.style.left = '0';
-    nEl.style.top = '0';
-    parent.innerHTML = '';
-    parent.appendChild(nEl);
-    return nEl;
-}
-
-/**
- * simpleTemplate
- *
- * @param {string} template
- * @param {object} data
- */
-function simpleTemplate(template, data) {
-    Object.keys(data).forEach(function (key) {
-        var value = (typeof value === 'object') ? JSON.stringify(data[key]) : data[key];
-        template = template.replace(new RegExp('{{' + key + '}}', 'g'), value);
-    });
-    return template;
-}
-
-/**
- * setIframeContent
- *
- * @param {HTMLIframeElement} iframeEl
- * @param content
- */
-function setIframeContent(iframeEl, content) {
-    var iframeDoc = iframeEl.contentWindow && iframeEl.contentWindow.document;
-    if (!iframeDoc) return false;
-
-    iframeDoc.write(content);
-
-    return true;
-}
-
-
-/**
- * extend object with keys from another object
- *
- * @param {object} toExtend
- * @param {object} fromSource
- */
-function extend(toExtend, fromSource) {
-    Object.keys(fromSource).forEach(function(key) {
-        toExtend[key] = fromSource[key];
-    });
-    return toExtend;
-}
-
-
-/**
- * unique will create a unique string everytime is called, sequentially and prefixed
- *
- * @param {string} prefix
- */
-function unique(prefix) {
-    var count = -1;
-    return function () {
-        return prefix + '_' + (++count);
-    };
-}
-
-module.exports = {
-    noop: noop,
-    validate: validate,
-    clearCallbackTimeout: clearCallbackTimeout,
-    callbackTimeout: callbackTimeout,
-    createElementInEl: createElementInEl,
-    createIframeWithContent: createIframeWithContent,
-    createIframe: createIframe,
-    simpleTemplate: simpleTemplate,
-    setIframeContent: setIframeContent,
-    extend: extend,
-    unique: unique
-};
-
-
-},{}]},{},[3])
-
-
-//# sourceMappingURL=VPAIDHTML5Client.js.map
-;
-/*jshint unused:false */
+(function (window, document, vjs, undefined) {/*jshint unused:false */
 "use strict";
 
 var NODE_TYPE_ELEMENT = 1;
@@ -2191,7 +160,7 @@ function transformArray(array, transformer) {
 function toFixedDigits(num, digits) {
   var formattedNum = num + '';
   digits = isNumber(digits) ? digits : 0;
-  num = isNumber(num) ? num : parseInt(num);
+  num = isNumber(num) ? num : parseInt(num, 10);
   if(isNumber(num) && !isNaN(num)){
     formattedNum = num + '';
     while(formattedNum.length < digits) {
@@ -2829,14 +798,14 @@ playerUtils.restorePlayerSnapshot = function restorePlayerSnapshot(player, snaps
     // on ios7, fiddling with textTracks too early will cause safari to crash
     player.one('contentloadedmetadata', restoreTracks);
 
+    player.one('canplay', tryToResume);
+    ensureCanplayEvtGetsFired();
+
     // if the src changed for ad playback, reset it
     player.src({src: snapshot.src, type: snapshot.type});
 
     // safari requires a call to `load` to pick up a changed source
     player.load();
-
-    // and then resume from the snapshots time once the original src has loaded
-    player.one('canplay', tryToResume);
 
   } else {
     restoreTracks();
@@ -2847,6 +816,20 @@ playerUtils.restorePlayerSnapshot = function restorePlayerSnapshot(player, snaps
   }
 
   /*** Local Functions ***/
+
+  /**
+   * Sometimes firefox does not trigger the 'canplay' evt.
+   * This code ensure that it always gets triggered triggered.
+   */
+  function ensureCanplayEvtGetsFired() {
+    var timeoutId = setTimeout(function() {
+      player.trigger('canplay');
+    }, 1000);
+
+    player.one('canplay', function(){
+      clearTimeout(timeoutId);
+    });
+  }
 
   /**
    * Determine whether the player needs to be restored to its state
@@ -2947,6 +930,7 @@ playerUtils.prepareForAds = function (player) {
   player.on('error', hideBlackPoster);//If there is an error in the player we remove the blackposter to show the err msg
   player.on('vast.adStart', hideBlackPoster);
   player.on('vast.adsCancel', hideBlackPoster);
+  player.on('vast.adError', hideBlackPoster);
   player.on('vast.adStart', addStyles);
   player.on('vast.adEnd', removeStyles);
   player.on('vast.adsCancel', removeStyles);
@@ -3408,7 +1392,7 @@ xml.decode = function decodeXML(str) {
     .replace(/&amp;/g, '&');
 };
 ;
-vjs.plugin('vastClient', function VASTPlugin(options) {
+videojs.plugin('vastClient', function VASTPlugin(options) {
   var snapshot;
   var player = this;
   var vast = new VASTClient();
@@ -3446,12 +1430,20 @@ vjs.plugin('vastClient', function VASTPlugin(options) {
 
   var settings = extend({}, defaultOpts, options || {});
 
-  if (isString(settings.url)) {
-    settings.url = echoFn(settings.url);
+  if(isUndefined(settings.adTagUrl) && isDefined(settings.url)){
+    settings.adTagUrl = settings.url;
   }
 
-  if (!isDefined(settings.url)) {
-    return trackAdError(new VASTError('on VideoJS VAST plugin, missing url on options object'));
+  if (isString(settings.adTagUrl)) {
+    settings.adTagUrl = echoFn(settings.adTagUrl);
+  }
+
+  if (isDefined(settings.adTagXML) && !isFunction(settings.adTagXML)) {
+    return trackAdError(new VASTError('on VideoJS VAST plugin, the passed adTagXML option does not contain a function'));
+  }
+
+  if (!isDefined(settings.adTagUrl) && !isFunction(settings.adTagXML)) {
+    return trackAdError(new VASTError('on VideoJS VAST plugin, missing adTagUrl on options object'));
   }
 
   playerUtils.prepareForAds(player);
@@ -3466,11 +1458,6 @@ vjs.plugin('vastClient', function VASTPlugin(options) {
   }
 
   player.on('vast.firstPlay', tryToPlayPrerollAd);
-
-  //If there is an error on the player, we reset the plugin.
-  player.on('error', function() {
-    player.trigger('vast.reset');
-  });
 
   player.on('vast.reset', function () {
     //If we are reseting the plugin, we don't want to restore the content
@@ -3505,8 +1492,8 @@ vjs.plugin('vastClient', function VASTPlugin(options) {
     });
 
     async.waterfall([
-      preparePlayerForAd,
       checkAdsEnabled,
+      preparePlayerForAd,
       playPrerollAd
     ], function (error, response) {
       if (error) {
@@ -3533,14 +1520,14 @@ vjs.plugin('vastClient', function VASTPlugin(options) {
     }
 
     function setupContentEvents() {
-      playerUtils.once(player, ['playing', 'vast.reset'], function (evt) {
+      playerUtils.once(player, ['playing', 'vast.reset', 'vast.firstPlay'], function (evt) {
         if (evt.type !== 'playing') {
           return;
         }
 
         player.trigger('vast.contentStart');
 
-        playerUtils.once(player, ['ended', 'vast.reset'], function (evt) {
+        playerUtils.once(player, ['ended', 'vast.reset', 'vast.firstPlay'], function (evt) {
           if (evt.type === 'ended') {
             player.trigger('vast.contentEnd');
           }
@@ -3618,7 +1605,7 @@ vjs.plugin('vastClient', function VASTPlugin(options) {
   }
 
   function getVastResponse(callback) {
-    vast.getVASTResponse(settings.url(), callback);
+    vast.getVASTResponse(settings.adTagUrl ? settings.adTagUrl() : settings.adTagXML, callback);
   }
 
   function playAd(vastResponse, callback) {
@@ -3659,7 +1646,8 @@ vjs.plugin('vastClient', function VASTPlugin(options) {
     }
 
     function preventManualProgress() {
-      var PROGRESS_THRESHOLD = 1;
+      //IOS video clock is very unreliable and we need a 3 seconds threshold to ensure that the user forwarded/rewound the ad
+      var PROGRESS_THRESHOLD = 3;
       var previousTime = 0;
       var tech = player.el().querySelector('.vjs-tech');
       var skipad_attempts = 0;
@@ -3710,10 +1698,11 @@ vjs.plugin('vastClient', function VASTPlugin(options) {
 });
 
 ;
-vjs.AdsLabel = vjs.Component.extend({
+var vjsComponent = videojs.getComponent('Component');
+var AdsLabel = videojs.extend(vjsComponent, {
   /** @constructor */
-  init: function (player, options) {
-    vjs.Component.call(this, player, options);
+  constructor: function (player, options) {
+    vjsComponent.call(this, player, options);
 
     var that = this;
 
@@ -3728,13 +1717,17 @@ vjs.AdsLabel = vjs.Component.extend({
   }
 });
 
-vjs.AdsLabel.prototype.createEl = function(){
-  return vjs.Component.prototype.createEl.call(this, 'div', {
+AdsLabel.prototype.createEl = function(){
+  return vjsComponent.prototype.createEl.call(this, 'div', {
     className: 'vjs-ads-label vjs-control vjs-label-hidden',
     innerHTML: 'Advertisement'
   });
 };
+
+videojs.registerComponent('AdsLabel', AdsLabel);
+
 ;
+var vjsComponent = videojs.getComponent('Component');
 /**
  * The component that shows a black screen until the ads plugin has decided if it can or it can not play the ad.
  *
@@ -3749,10 +1742,10 @@ vjs.AdsLabel.prototype.createEl = function(){
  * @param {Object=} options
  * @constructor
  */
-vjs.BlackPoster = vjs.Component.extend({
+var BlackPoster = videojs.extend(vjsComponent, {
   /** @constructor */
-  init: function(player, options){
-    vjs.Component.call(this, player, options);
+  constructor: function(player, options){
+    vjsComponent.call(this, player, options);
 
     var posterImg = player.getChild('posterImage');
 
@@ -3769,22 +1762,22 @@ vjs.BlackPoster = vjs.Component.extend({
  * Create the black poster div element
  * @return {Element}
  */
-vjs.BlackPoster.prototype.createEl = function(){
-  return vjs.createEl('div', {
+BlackPoster.prototype.createEl = function(){
+  return vjsComponent.prototype.createEl.call(this, 'div', {
     className: 'vjs-black-poster'
   });
 };
+
+videojs.registerComponent('BlackPoster', BlackPoster);
 ;
 function VPAIDAdUnitWrapper(vpaidAdUnit, opts) {
   if (!(this instanceof VPAIDAdUnitWrapper)) {
-    return new VPAIDAdUnitWrapper(vpaidAdUnit);
+    return new VPAIDAdUnitWrapper(vpaidAdUnit, opts);
   }
   sanityCheck(vpaidAdUnit, opts);
-  var defaultOpts = {
-    responseTimeout: 5000
-  };
 
-  this.options = extend({}, defaultOpts, opts || {});
+  this.options = extend({}, opts);
+
   this._adUnit = vpaidAdUnit;
 
   /*** Local Functions ***/
@@ -3793,8 +1786,12 @@ function VPAIDAdUnitWrapper(vpaidAdUnit, opts) {
       throw new VASTError('on VPAIDAdUnitWrapper, the passed VPAID adUnit does not fully implement the VPAID interface');
     }
 
-    if (opts && !isObject(opts)) {
+    if (!isObject(opts)) {
       throw new VASTError("on VPAIDAdUnitWrapper, expected options hash  but got '" + opts + "'");
+    }
+
+    if (!("responseTimeout" in opts) || !isNumber(opts.responseTimeout) ){
+      throw new VASTError("on VPAIDAdUnitWrapper, expected responseTimeout in options");
     }
   }
 }
@@ -4146,12 +2143,8 @@ function VPAIDIntegrator(player, settings) {
   this.player = player;
   this.containerEl = createVPAIDContainerEl(player);
   this.options = {
-    responseTimeout: 2000,
-    VPAID_VERSION: {
-      full: '2.0',
-      major: 2,
-      minor: 0
-    }
+    responseTimeout: 5000,
+    VPAID_VERSION: '2.0'
   };
   this.settings = settings;
 
@@ -4185,10 +2178,8 @@ VPAIDIntegrator.prototype.playAd = function playVPaidAd(vastResponse, callback) 
   tech = this._findSupportedTech(vastResponse, this.settings);
   dom.addClass(player.el(), 'vjs-vpaid-ad');
 
-  player.on('error', triggerVpaidAdEnd);
   player.on('vast.adsCancel', triggerVpaidAdEnd);
   player.one('vpaid.adEnd', function(){
-    player.off('error', triggerVpaidAdEnd);
     player.off('vast.adsCancel', triggerVpaidAdEnd);
     removeAdUnit();
   });
@@ -4283,13 +2274,14 @@ VPAIDIntegrator.prototype._findSupportedTech = function (vastResponse, settings)
 VPAIDIntegrator.prototype._loadAdUnit = function (tech, vastResponse, next) {
   var player = this.player;
   var vjsTechEl = player.el().querySelector('.vjs-tech');
+  var responseTimeout = this.settings.responseTimeout || this.options.responseTimeout;
   tech.loadAdUnit(this.containerEl, vjsTechEl, function (error, adUnit) {
     if (error) {
       return next(error, adUnit, vastResponse);
     }
 
     try {
-      var WrappedAdUnit = new VPAIDAdUnitWrapper(adUnit, {src: tech.mediaFile.src});
+      var WrappedAdUnit = new VPAIDAdUnitWrapper(adUnit, {src: tech.mediaFile.src, responseTimeout: responseTimeout});
       var techClass = 'vjs-' + tech.name + '-ad';
       dom.addClass(player.el(), techClass);
       player.one('vpaid.adEnd', function() {
@@ -4317,7 +2309,7 @@ VPAIDIntegrator.prototype._playAdUnit = function (adUnit, vastResponse, callback
 };
 
 VPAIDIntegrator.prototype._handshake = function handshake(adUnit, vastResponse, next) {
-  adUnit.handshakeVersion('2.0', function (error, version) {
+  adUnit.handshakeVersion(this.options.VPAID_VERSION, function (error, version) {
     if (error) {
       return next(error, adUnit, vastResponse);
     }
@@ -4355,29 +2347,35 @@ VPAIDIntegrator.prototype._setupEvents = function (adUnit, vastResponse, next) {
   var that = this;
 
   adUnit.on('AdSkipped', function () {
+    player.trigger('vpaid.AdSkipped');
     tracker.trackSkip();
   });
 
   adUnit.on('AdImpression', function () {
+    player.trigger('vpaid.AdImpression');
     tracker.trackImpressions();
   });
 
   adUnit.on('AdStarted', function () {
+    player.trigger('vpaid.AdStarted');
     tracker.trackCreativeView();
     notifyPlayToPlayer();
   });
 
   adUnit.on('AdVideoStart', function () {
+    player.trigger('vpaid.AdVideoStart');
     tracker.trackStart();
     notifyPlayToPlayer();
   });
 
   adUnit.on('AdPlaying', function () {
+    player.trigger('vpaid.AdPlaying');
     tracker.trackResume();
     notifyPlayToPlayer();
   });
 
   adUnit.on('AdPaused', function () {
+    player.trigger('vpaid.AdPaused');
     tracker.trackPause();
     notifyPauseToPlayer();
   });
@@ -4398,22 +2396,27 @@ VPAIDIntegrator.prototype._setupEvents = function (adUnit, vastResponse, next) {
   }
 
   adUnit.on('AdVideoFirstQuartile', function () {
+    player.trigger('vpaid.AdVideoFirstQuartile');
     tracker.trackFirstQuartile();
   });
 
   adUnit.on('AdVideoMidpoint', function () {
+    player.trigger('vpaid.AdVideoMidpoint');
     tracker.trackMidpoint();
   });
 
   adUnit.on('AdVideoThirdQuartile', function () {
+    player.trigger('vpaid.AdVideoThirdQuartile');
     tracker.trackThirdQuartile();
   });
 
   adUnit.on('AdVideoComplete', function () {
+    player.trigger('vpaid.AdVideoComplete');
     tracker.trackComplete();
   });
 
   adUnit.on('AdClickThru', function (data) {
+    player.trigger('vpaid.AdClickThru');
     var url = data.url;
     var playerHandles = data.playerHandles;
     var clickThruUrl = isNotEmptyString(url) ? url : generateClickThroughURL(vastResponse.clickThrough);
@@ -4434,25 +2437,30 @@ VPAIDIntegrator.prototype._setupEvents = function (adUnit, vastResponse, next) {
   });
 
   adUnit.on('AdUserAcceptInvitation', function () {
+    player.trigger('vpaid.AdUserAcceptInvitation');
     tracker.trackAcceptInvitation();
     tracker.trackAcceptInvitationLinear();
   });
 
   adUnit.on('AdUserClose', function () {
+    player.trigger('vpaid.AdUserClose');
     tracker.trackClose();
     tracker.trackCloseLinear();
   });
 
   adUnit.on('AdUserMinimize', function () {
+    player.trigger('vpaid.AdUserMinimize');
     tracker.trackCollapse();
   });
 
   adUnit.on('AdError', function () {
+    player.trigger('vpaid.AdError');
     //NOTE: we track errors code 901, as noted in VAST 3.0
     tracker.trackErrorWithCode(901);
   });
 
   adUnit.on('AdVolumeChange', function () {
+    player.trigger('vpaid.AdVolumeChange');
     var lastVolume = player.volume();
     adUnit.getAdVolume(function (error, currentVolume) {
       if (currentVolume === 0 && lastVolume > 0) {
@@ -4515,9 +2523,12 @@ VPAIDIntegrator.prototype._addSkipButton = function (adUnit, vastResponse, next)
 
   /*** Local function ***/
   function updateSkipButtonState() {
+    player.trigger('vpaid.AdSkippableStateChange');
     adUnit.getAdSkippableState(function (error, isSkippable) {
       if (isSkippable) {
-        addSkipButton(player);
+        if (!skipButton) {
+          addSkipButton(player);
+        }
       } else {
         removeSkipButton(player);
       }
@@ -4578,6 +2589,7 @@ VPAIDIntegrator.prototype._linkPlayerControls = function (adUnit, vastResponse, 
     }
 
     function updatePlayerVolume() {
+      player.trigger('vpaid.AdVolumeChange');
       adUnit.getAdVolume(function (error, vol) {
         if (error) {
           logError(error);
@@ -4611,7 +2623,9 @@ VPAIDIntegrator.prototype._startAd = function (adUnit, vastResponse, next) {
 };
 
 VPAIDIntegrator.prototype._finishPlaying = function (adUnit, vastResponse, next) {
+  var player = this.player;
   adUnit.on('AdStopped', function () {
+   player.trigger('vpaid.AdStopped');
    finishPlayingAd(null);
   });
 
@@ -4642,7 +2656,6 @@ function logError(error) {
     console.log('ERROR: ' + error.message, error);
   }
 }
-
 
 ;
 function Ad(adJTree) {
@@ -4815,17 +2828,22 @@ function VASTClient(options) {
   this.errorURLMacros = [];
 }
 
-VASTClient.prototype.getVASTResponse = function getVASTResponse(url, callback) {
+VASTClient.prototype.getVASTResponse = function getVASTResponse(adTagUrl, callback) {
   var that = this;
 
-  //We reset the errorURLMacros before doing anything.
-  this.errorURLMacros = [];
+  var error = sanityCheck(adTagUrl, callback);
+  if (error) {
+    if (isFunction(callback)) {
+      return callback(error);
+    }
+    throw error;
+  }
 
   async.waterfall([
-      this._getAd.bind(this, url),
+      this._getVASTAd.bind(this, adTagUrl),
       buildVASTResponse
     ],
-    this._sendVASTResponse(callback));
+    callback);
 
   /*** Local functions ***/
   function buildVASTResponse(adsChain, cb) {
@@ -4836,189 +2854,179 @@ VASTClient.prototype.getVASTResponse = function getVASTResponse(url, callback) {
       cb(e);
     }
   }
-};
 
-VASTClient.prototype._sendVASTResponse = function sendVASTResponse(callback) {
-  var that = this;
-  callback = callback || noop;
-
-  return function (error, response) {
-    if (error) {
-      vastUtil.track(that.errorURLMacros, {ERRORCODE: error.code || 900});  //900 <== Undefined error
-    }
-    callback(error, response);
-  };
-};
-
-VASTClient.prototype._getAd = function getVASTAd(url, callback) {
-  var error;
-  var that = this;
-  var options = isObject(url) && !isNull(url) ? url : {url: url};
-  options.ads = options.ads || [];
-  error = sanityCheck(options, callback);
-  if (error) {
-    if (isFunction(callback)) {
-      return callback(error, null);
-    }
-    throw error;
-  }
-
-  async.waterfall([
-    requestVASTXml,
-    buildAd
-  ], callback);
-
-  /*** local function ***/
-  function sanityCheck(opts, cb) {
-    if (!isString(opts.url)) {
-      return new VASTError('on VASTClient._getAd, missing video tag URL');
+  function sanityCheck(adTagUrl, cb) {
+    if (!adTagUrl) {
+      return new VASTError('on VASTClient.getVASTResponse, missing ad tag URL');
     }
 
     if (!isFunction(cb)) {
-      return new VASTError('on VASTClient._getAd, missing callback function');
-    }
-
-    if (opts.ads.length >= that.WRAPPER_LIMIT) {
-      return new VASTError("on VASTClient._getAd, players wrapper limit reached (the limit is " + that.WRAPPER_LIMIT + ")", 302);
-    }
-  }
-
-  function requestVASTXml(callback) {
-    that._requestVASTXml(options.url, callback);
-  }
-
-  function buildAd(adXML, callback) {
-    var adTree;
-    try {
-      adTree = that._buildVastTree(adXML);
-      getValidAd(adTree.ads, options.ads, callback);
-    } catch (e) {
-      callback(e);
-    }
-
-    /*** local Functions  ***/
-    function getValidAd(possibleAds, previousAds, callback) {
-      getAd(possibleAds.shift(), previousAds, function (error, adChain) {
-        if (error) {
-          if (possibleAds.length > 0) {
-            return getValidAd(possibleAds, previousAds, callback);
-          }
-          return callback(error);
-        }
-        callback(null, adChain);
-      });
-    }
-
-    function getAd(adTree, previousAds, callback) {
-      try {
-        var ad = that._buildAd(adTree);
-
-        if (ad.wrapper) {
-          return getNextAd(ad, previousAds, callback);
-        }
-        return callback(null, previousAds.concat(ad));
-      } catch (e) {
-        callback(e);
-      }
-    }
-
-    function getNextAd(ad, previousAds, callback) {
-      return that._getAd({
-        url: ad.wrapper.VASTAdTagURI,
-        ads: previousAds.concat(ad)
-      }, callback);
+      return new VASTError('on VASTClient.getVASTResponse, missing callback function');
     }
   }
 };
 
-VASTClient.prototype._requestVASTXml = function requestVASTXml(url, callback) {
-  try{
-    http.get(url, function (error, response, status){
-      if(error) {
-        return callback(new VASTError("on VASTClient.requestVastXML, HTTP request error with status '" + status + "'", 301));
-      }
-      callback(null, response);
-    }, {
-      withCredentials: true
-    });
-  }catch(e){
-    callback(e);
-  }
-};
-
-VASTClient.prototype._buildVastTree = function buildVastTree(xmlStr) {
-  var vastTree, vastVersion;
-
-  try {
-    vastTree = xml.toJXONTree(xmlStr);
-    vastVersion = xml.attr(vastTree, 'version');
-    vastTree.ads = isArray(vastTree.ad) ? vastTree.ad : [vastTree.ad];
-
-  } catch (e) {
-    throw new VASTError("on VASTClient.buildVastTree, error parsing xml", 100);
-  }
-
-  if (!vastTree.ad) {
-    throw new VASTError('on VASTClient.buildVastTree, no Ad in VAST tree', 303);
-  }
-
-  if(vastVersion && (vastVersion != 3 && vastVersion != 2)){
-    throw new VASTError('on VASTClient.buildVastTree, not supported VAST version "'+vastVersion+'"', 102);
-  }
-
-  return vastTree;
-
-};
-
-VASTClient.prototype._buildAd = function buildAd(adJxonTree) {
-  var ad;
+VASTClient.prototype._getVASTAd = function (adTagUrl, callback) {
   var that = this;
 
-  try {
-    ad = new Ad(adJxonTree);
-  } catch (e) {
-    throw new VASTError('on VASTClient._buildAd, ' + e.message, 900);
-  }
-
-  addErrorUrlMacros(ad);
-  validateAd(ad);
-
-  return ad;
-  /*** Local Functions ***/
-
-  function addErrorUrlMacros(ad) {
-    if(ad.wrapper && ad.wrapper.error) {
-      that.errorURLMacros.push(ad.wrapper.error);
+  getAdWaterfall(adTagUrl, function (error, vastTree) {
+    var waterfallAds = vastTree && isArray(vastTree.ads) ? vastTree.ads : null;
+    if (error) {
+      that._trackError(error, waterfallAds);
+      return callback(error, waterfallAds);
     }
 
-    if(ad.inLine && ad.inLine.error){
-      that.errorURLMacros.push(ad.inLine.error);
+    getAd(waterfallAds.shift(), [], waterfallHandler);
+
+    /*** Local functions ***/
+    function waterfallHandler(error, adChain) {
+      if (error) {
+        that._trackError(error, adChain);
+        if (waterfallAds.length > 0) {
+          getAd(waterfallAds.shift(),[], waterfallHandler);
+        } else {
+          callback(error, adChain);
+        }
+      } else {
+        callback(null, adChain);
+      }
+    }
+  });
+
+  /*** Local functions ***/
+  function getAdWaterfall(adTagUrl, callback) {
+    var requestVastXML = that._requestVASTXml.bind(that, adTagUrl);
+    async.waterfall([
+      requestVastXML,
+      buildVastWaterfall
+    ], callback);
+  }
+
+  function buildVastWaterfall(xmlStr, callback) {
+    var vastTree;
+    try {
+      vastTree = xml.toJXONTree(xmlStr);
+      vastTree.ads = isArray(vastTree.ad) ? vastTree.ad : [vastTree.ad];
+      callback(validateVASTTree(vastTree), vastTree);
+    } catch (e) {
+      callback(new VASTError("on VASTClient.getVASTAd.buildVastWaterfall, error parsing xml", 100), null);
+    }
+  }
+
+  function validateVASTTree(vastTree) {
+    var vastVersion = xml.attr(vastTree, 'version');
+
+    if (!vastTree.ad) {
+      return new VASTError('on VASTClient.getVASTAd.validateVASTTree, no Ad in VAST tree', 303);
+    }
+
+    if (vastVersion && (vastVersion != 3 && vastVersion != 2)) {
+      return new VASTError('on VASTClient.getVASTAd.validateVASTTree, not supported VAST version "' + vastVersion + '"', 102);
+    }
+
+    return null;
+  }
+
+  function getAd(adTagUrl, adChain, callback) {
+    if (adChain.length >= that.WRAPPER_LIMIT) {
+      return callback(new VASTError("on VASTClient.getVASTAd.getAd, players wrapper limit reached (the limit is " + that.WRAPPER_LIMIT + ")", 302), adChain);
+    }
+
+    async.waterfall([
+      function (next) {
+        if (isString(adTagUrl)) {
+          requestVASTAd(adTagUrl, next);
+        } else {
+          next(null, adTagUrl);
+        }
+      },
+      buildAd
+    ], function (error, ad) {
+      if (ad) {
+        adChain.push(ad);
+      }
+
+      if (error) {
+        return callback(error, adChain);
+      }
+
+      if (ad.wrapper) {
+        return getAd(ad.wrapper.VASTAdTagURI, adChain, callback);
+      }
+
+      return callback(null, adChain);
+    });
+  }
+
+  function buildAd(adJxonTree, callback) {
+    try {
+      var ad = new Ad(adJxonTree);
+      callback(validateAd(ad), ad);
+    } catch (e) {
+      callback(new VASTError('on VASTClient.getVASTAd.buildAd, error parsing xml', 100), null);
     }
   }
 
   function validateAd(ad) {
     var wrapper = ad.wrapper;
     var inLine = ad.inLine;
+    var errMsgPrefix = 'on VASTClient.getVASTAd.validateAd, ';
 
     if (inLine && wrapper) {
-      throw new VASTError('on VASTClient._buildAd, InLine and Wrapper both found on the same Ad', 101);
+      return new VASTError(errMsgPrefix +"InLine and Wrapper both found on the same Ad", 101);
     }
 
     if (!inLine && !wrapper) {
-      throw new VASTError('on VASTClient._buildAd, nor wrapper nor inline elements found on the Ad', 101);
+      return new VASTError(errMsgPrefix + "nor wrapper nor inline elements found on the Ad", 101);
     }
 
-    if (inLine) {
-      if (inLine.creatives.length === 0) {
-        throw new VASTError("on VASTClient._buildAd, missing creative in InLine element", 101);
-      }
+    if (inLine && inLine.creatives.length === 0) {
+      return new VASTError(errMsgPrefix + "missing creative in InLine element", 101);
     }
 
-    if (wrapper) {
-      if (!wrapper.VASTAdTagURI) {
-        throw new VASTError("on VASTClient._buildAd, missing 'VASTAdTagURI' in wrapper", 101);
-      }
+    if (wrapper && !wrapper.VASTAdTagURI) {
+      return new VASTError(errMsgPrefix + "missing 'VASTAdTagURI' in wrapper", 101);
     }
+  }
+
+  function requestVASTAd(adTagUrl, callback) {
+    that._requestVASTXml(adTagUrl, function (error, xmlStr) {
+      if (error) {
+        return callback(error);
+      }
+      try {
+        var vastTree = xml.toJXONTree(xmlStr);
+        callback(validateVASTTree(vastTree), vastTree.ad);
+      } catch (e) {
+        callback(new VASTError("on VASTClient.getVASTAd.requestVASTAd, error parsing xml", 100));
+      }
+    });
+  }
+};
+
+VASTClient.prototype._requestVASTXml = function requestVASTXml(adTagUrl, callback) {
+  try {
+    if (isFunction(adTagUrl)) {
+      adTagUrl(requestHandler);
+    } else {
+      http.get(adTagUrl, requestHandler, {
+        withCredentials: true
+      });
+    }
+  } catch (e) {
+    callback(e);
+  }
+
+  /*** Local functions ***/
+  function requestHandler(error, response, status) {
+    if (error) {
+      var errMsg = isDefined(status) ?
+      "on VASTClient.requestVastXML, HTTP request error with status '" + status + "'" :
+        "on VASTClient.requestVastXML, Error getting the the VAST XML with he passed adTagXML fn";
+      return callback(new VASTError(errMsg, 301), null);
+    }
+
+    callback(null, response);
   }
 };
 
@@ -5039,20 +3047,41 @@ VASTClient.prototype._buildVASTResponse = function buildVASTResponse(adsChain) {
   function validateResponse(response) {
     var progressEvents = response.trackingEvents.progress;
 
-    if(!response.hasLinear()){
+    if (!response.hasLinear()) {
       throw new VASTError("on VASTClient._buildVASTResponse, Received an Ad type that is not supported", 200);
     }
 
-    if (!response.duration) {
+    if (response.duration === undefined) {
       throw new VASTError("on VASTClient._buildVASTResponse, Missing duration field in VAST response", 101);
     }
 
     if (progressEvents) {
-      progressEvents.forEach(function(progressEvent){
+      progressEvents.forEach(function (progressEvent) {
         if (!isNumber(progressEvent.offset)) {
           throw new VASTError("on VASTClient._buildVASTResponse, missing or wrong offset attribute on progress tracking event", 101);
         }
       });
+    }
+  }
+};
+
+VASTClient.prototype._trackError = function (error, adChain) {
+  if (!isArray(adChain) || adChain.length === 0) { //There is nothing to track
+    return;
+  }
+
+  var errorURLMacros = [];
+  adChain.forEach(addErrorUrlMacros);
+  vastUtil.track(errorURLMacros, {ERRORCODE: error.code || 900});  //900 <== Undefined error
+
+  /*** Local functions  ***/
+  function addErrorUrlMacros(ad) {
+    if (ad.wrapper && ad.wrapper.error) {
+      errorURLMacros.push(ad.wrapper.error);
+    }
+
+    if (ad.inLine && ad.inLine.error) {
+      errorURLMacros.push(ad.inLine.error);
     }
   }
 };
@@ -5175,11 +3204,16 @@ VASTIntegrator.prototype._setupEvents = function setupEvents(adMediaFile, tracke
   player.on('volumechange', trackVolumeChange);
 
   playerUtils.once(player, ['vast.adEnd', 'vast.adsCancel'], unbindEvents);
+  playerUtils.once(player, ['vast.adEnd', 'vast.adsCancel', 'vast.adSkip'], function(evt){
+    if(evt.type === 'vast.adEnd'){
+      tracker.trackComplete();
+    }
+  });
+
   return callback(null, adMediaFile, response);
 
   /*** Local Functions ***/
   function unbindEvents() {
-    tracker.trackComplete();
     player.off('fullscreenchange', trackFullscreenChange);
     player.off('vast.adStart', trackImpressions);
     player.off('pause', trackPause);
@@ -5197,8 +3231,9 @@ VASTIntegrator.prototype._setupEvents = function setupEvents(adMediaFile, tracke
 
   function trackPause() {
     //NOTE: whenever a video ends the video Element triggers a 'pause' event before the 'ended' event.
-    //      We should not track this pause event because it makes the VAST tracking confusing
-    if(player.currentTime() === player.duration()){
+    //      We should not track this pause event because it makes the VAST tracking confusing again we use a
+    //      Threshold of 2 seconds to prevent false positives on IOS.
+    if (Math.abs(player.duration() - player.currentTime()) < 2) {
       return;
     }
 
@@ -5248,7 +3283,7 @@ VASTIntegrator.prototype._addSkipButton = function addSkipButton(source, tracker
     player.el().appendChild(skipButton);
     player.on('timeupdate', updateSkipButton);
 
-    playerUtils.once(player, ['ended', 'error'], removeSkipButton);
+    playerUtils.once(player, ['vast.adEnd', 'vast.adsCancel'], removeSkipButton);
 
     function removeSkipButton() {
       player.off('timeupdate', updateSkipButton);
@@ -5263,7 +3298,7 @@ VASTIntegrator.prototype._addSkipButton = function addSkipButton(source, tracker
     skipButton.onclick = function (e) {
       if (dom.hasClass(skipButton, 'enabled')) {
         tracker.trackSkip();
-        player.trigger('ended');//We trigger the end of the ad playing
+        player.trigger('vast.adSkip');
       }
 
       //We prevent event propagation to avoid problems with the clickThrough and so on
@@ -5297,7 +3332,7 @@ VASTIntegrator.prototype._addClickThrough = function addClickThrough(mediaFile, 
 
   player.el().insertBefore(blocker, player.controlBar.el());
   player.on('timeupdate', updateBlocker);
-  playerUtils.once(player, ['ended', 'error'], removeBlocker);
+  playerUtils.once(player, ['vast.adEnd', 'vast.adsCancel'], removeBlocker);
 
   return callback(null, mediaFile, tracker, response);
 
@@ -5354,6 +3389,7 @@ VASTIntegrator.prototype._addClickThrough = function addClickThrough(mediaFile, 
 VASTIntegrator.prototype._playSelectedAd = function playSelectedAd(source, response, callback) {
   var player = this.player;
 
+  player.preload("auto"); //without preload=auto the durationchange event is never fired
   player.src(source);
 
   playerUtils.once(player, ['durationchange', 'error', 'vast.adsCancel'], function (evt) {
@@ -5375,8 +3411,8 @@ VASTIntegrator.prototype._playSelectedAd = function playSelectedAd(source, respo
 
       player.trigger('vast.adStart');
 
-      playerUtils.once(player, ['ended', 'vast.adsCancel'], function (evt) {
-        if(evt.type === 'ended'){
+      playerUtils.once(player, ['ended', 'vast.adsCancel', 'vast.adSkip'], function (evt) {
+        if(evt.type === 'ended' || evt.type === 'vast.adSkip'){
           callback(null, response);
         }
         //NOTE: if the ads get cancel we do nothing
@@ -5388,7 +3424,6 @@ VASTIntegrator.prototype._playSelectedAd = function playSelectedAd(source, respo
 VASTIntegrator.prototype._trackError = function trackError(error, response) {
   vastUtil.track(response.errorURLMacros, {ERRORCODE: error.code || 900});
 };
-
 
 ;
 (function (window) {
@@ -5578,9 +3613,9 @@ function VASTTracker(assetURI, vastResponse) {
   this.assetURI = assetURI;
   this.progress = 0;
   this.quartiles = {
-    firstQuartile: Math.round(25 * vastResponse.duration) / 100,
-    midpoint: Math.round(50 * vastResponse.duration) / 100,
-    thirdQuartile: Math.round(75 * vastResponse.duration) / 100
+    firstQuartile: {tracked: false, time: Math.round(25 * vastResponse.duration) / 100},
+    midpoint: {tracked: false, time: Math.round(50 * vastResponse.duration) / 100},
+    thirdQuartile: {tracked: false, time: Math.round(75 * vastResponse.duration) / 100}
   };
 
   /*** Local Functions ***/
@@ -5626,22 +3661,27 @@ VASTTracker.prototype.trackEvent = function trackEvent(eventName, trackOnce) {
   }
 };
 
-VASTTracker.prototype.trackProgress = function trackProgress(newProgress) {
+VASTTracker.prototype.trackProgress = function trackProgress(newProgressInMs) {
   var events = [];
   var ONCE = true;
   var ALWAYS = false;
   var trackingEvents = this.response.trackingEvents;
 
-  if (isNumber(newProgress)) {
-    addTrackEvent('start', ONCE, newProgress > 0);
-    addTrackEvent('rewind', ALWAYS, this.progress > newProgress);
-    addQuartileEvents.call(this, newProgress);
-    trackProgressEvents.call(this, newProgress);
+  if (isNumber(newProgressInMs)) {
+    addTrackEvent('start', ONCE, newProgressInMs > 0);
+    addTrackEvent('rewind', ALWAYS, hasRewound(this.progress, newProgressInMs));
+    addQuartileEvents.call(this, newProgressInMs);
+    trackProgressEvents.call(this, newProgressInMs);
     trackEvents.call(this);
-    this.progress = newProgress;
+    this.progress = newProgressInMs;
   }
 
   /*** Local function ***/
+  function hasRewound(currentProgress, newProgress) {
+    var REWIND_THRESHOLD = 3000; //IOS video clock is very unreliable and we need a 3 seconds threshold to ensure that there was a rewind an that it was on purpose.
+    return currentProgress > newProgressInMs && Math.abs(newProgress - currentProgress) > REWIND_THRESHOLD;
+  }
+
   function addTrackEvent(eventName, trackOnce, canBeAdded) {
     if (trackingEvents[eventName] && canBeAdded) {
       events.push({
@@ -5652,10 +3692,33 @@ VASTTracker.prototype.trackProgress = function trackProgress(newProgress) {
   }
 
   function addQuartileEvents(progress) {
-    forEach(this.quartiles, function (quartileTime, eventName) {
-      //We only fire the quartile event if the progress is bigger than the quartile time by one second at most.
-      addTrackEvent(eventName, ONCE, progress >= quartileTime && progress <= (quartileTime + 1000));
-    });
+    var quartiles = this.quartiles;
+    var firstQuartile = this.quartiles.firstQuartile;
+    var midpoint = this.quartiles.midpoint;
+    var thirdQuartile = this.quartiles.thirdQuartile;
+
+    if (!firstQuartile.tracked) {
+      trackQuartile('firstQuartile', progress);
+    } else if (!midpoint.tracked) {
+      trackQuartile('midpoint', progress);
+    } else {
+      trackQuartile('thirdQuartile', progress);
+    }
+
+    /*** Local function ***/
+    function trackQuartile(quartileName, progress){
+      var quartile = quartiles[quartileName];
+      if(canBeTracked(quartile, progress)){
+        quartile.tracked = true;
+        addTrackEvent(quartileName, ONCE, true);
+      }
+    }
+  }
+
+  function canBeTracked(quartile, progress) {
+    var quartileTime = quartile.time;
+    //We only fire the quartile event if the progress is bigger than the quartile time by 5 seconds at most.
+    return progress >= quartileTime && progress <= (quartileTime + 5000);
   }
 
   function trackProgressEvents(progress) {
@@ -5684,21 +3747,13 @@ VASTTracker.prototype.trackProgress = function trackProgress(newProgress) {
 };
 
 [
-  'start',
   'rewind',
   'fullscreen',
   'exitFullscreen',
-  'complete',
   'pause',
   'resume',
-  'close',
-  'closeLinear',
-  'skip',
   'mute',
   'unmute',
-  'firstQuartile',
-  'midpoint',
-  'thirdQuartile',
   'acceptInvitation',
   'acceptInvitationLinear',
   'collapse',
@@ -5708,6 +3763,34 @@ VASTTracker.prototype.trackProgress = function trackProgress(newProgress) {
       this.trackEvent(eventName);
     };
   });
+
+[
+  'start',
+  'skip',
+  'close',
+  'closeLinear'
+].forEach(function (eventName) {
+    VASTTracker.prototype['track' + capitalize(eventName)] = function () {
+      this.trackEvent(eventName, true);
+    };
+  });
+
+[
+  'firstQuartile',
+  'midpoint',
+  'thirdQuartile'
+].forEach(function (quartile) {
+    VASTTracker.prototype['track' + capitalize(quartile)] = function () {
+      this.quartiles[quartile].tracked = true;
+      this.trackEvent(quartile, true);
+    };
+  });
+
+VASTTracker.prototype.trackComplete = function () {
+  if(this.quartiles.thirdQuartile.tracked){
+    this.trackEvent('complete', true);
+  }
+};
 
 VASTTracker.prototype.trackErrorWithCode = function trackErrorWithCode(errorcode) {
   if (isNumber(errorcode)) {
@@ -5840,15 +3923,15 @@ var vastUtil = {
 
     /*** local functions ***/
     function parseHoursToMs(hourStr) {
-      return parseInt(hourStr) * 60 * 60 * 1000;
+      return parseInt(hourStr, 10) * 60 * 60 * 1000;
     }
 
     function parseMinToMs(minStr) {
-      return parseInt(minStr) * 60 * 1000;
+      return parseInt(minStr, 10) * 60 * 1000;
     }
 
     function parseSecToMs(secStr) {
-      return parseInt(secStr) * 1000;
+      return parseInt(secStr, 10) * 1000;
     }
   },
 

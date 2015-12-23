@@ -87,7 +87,7 @@ div.vast-skip-button {
   display: none!important;
 }
 
-.vjs-default-skin div.vjs-ads-label {
+.vjs-ads-label {
   font-size: 13px;
   line-height: 30px;
   font-weight: normal;
@@ -96,6 +96,7 @@ div.vast-skip-button {
   display: none;
   width: auto;
   padding-left: 10px;
+  order: 0;
 }
 
 .vjs-ad-playing .vjs-control.vjs-ads-label {
