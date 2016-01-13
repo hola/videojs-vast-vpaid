@@ -193,6 +193,7 @@ videojs.plugin('vastClient', function VASTPlugin(options) {
       // If we remove it synchronously we see a flash of the content video before the ad starts playing.
       setTimeout(function () {
         dom.removeClass(player.el(), 'vjs-vast-ad-loading');
+        dom.removeClass(player.el(), 'vjs-seeking');
       }, 100);
     }
 
