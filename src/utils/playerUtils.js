@@ -11,7 +11,7 @@ playerUtils.getPlayerSnapshot = function getPlayerSnapshot(player) {
   var tech = player.el().querySelector('.vjs-tech');
   var snapshot = {
     ended: player.ended(),
-    src: player.currentSrc(),
+    src: (player.cache_ && player.cache_.src) || player.currentSrc(),
     currentTime: player.currentTime(),
     type: player.currentType(),
     playing: !player.paused(),
