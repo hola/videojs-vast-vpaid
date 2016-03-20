@@ -3395,10 +3395,14 @@ VASTIntegrator.prototype._addClickThrough = function addClickThrough(mediaFile, 
 VASTIntegrator.prototype._playSelectedAd = function playSelectedAd(source, response, callback) {
   var player = this.player;
 
+  function _triggerHola(){ player.trigger('hola.adDownload'); }
+
   player.preload("auto"); //without preload=auto the durationchange event is never fired
+  player.one('loadstart', _triggerHola);
   player.src(source);
 
   playerUtils.once(player, ['durationchange', 'error', 'vast.adsCancel'], function (evt) {
+    player.off('loadstart', _triggerHola);
     if (evt.type === 'durationchange') {
       playAd();
     } else if(evt.type === 'error') {
