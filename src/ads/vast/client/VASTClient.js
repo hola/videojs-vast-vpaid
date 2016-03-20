@@ -192,6 +192,7 @@ VASTClient.prototype._requestVASTXml = function requestVASTXml(adTagUrl, callbac
     if (isFunction(adTagUrl)) {
       adTagUrl(requestHandler);
     } else {
+      videojs.trigger(this, 'hola.adConfigReqSending');
       http.get(adTagUrl, requestHandler, {
         withCredentials: true
       });

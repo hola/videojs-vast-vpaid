@@ -63,6 +63,10 @@ videojs.plugin('vastClient', function VASTPlugin(options) {
     });
   }
 
+  videojs.on(vast, 'hola.adConfigReqSending', function(){
+      player.trigger('hola.adConfigReqSending');
+  });
+
   player.on('vast.firstPlay', tryToPlayPrerollAd);
 
   player.on('vast.reset', function () {

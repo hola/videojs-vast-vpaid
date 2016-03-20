@@ -1457,6 +1457,10 @@ videojs.plugin('vastClient', function VASTPlugin(options) {
     });
   }
 
+  videojs.on(vast, 'hola.adConfigReqSending', function(){
+      player.trigger('hola.adConfigReqSending');
+  });
+
   player.on('vast.firstPlay', tryToPlayPrerollAd);
 
   player.on('vast.reset', function () {
@@ -3010,6 +3014,7 @@ VASTClient.prototype._requestVASTXml = function requestVASTXml(adTagUrl, callbac
     if (isFunction(adTagUrl)) {
       adTagUrl(requestHandler);
     } else {
+      videojs.trigger(this, 'hola.adConfigReqSending');
       http.get(adTagUrl, requestHandler, {
         withCredentials: true
       });
