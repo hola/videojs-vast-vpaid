@@ -189,10 +189,10 @@ VASTClient.prototype._getVASTAd = function (adTagUrl, callback) {
 
 VASTClient.prototype._requestVASTXml = function requestVASTXml(adTagUrl, callback) {
   try {
+    videojs.trigger(this, 'hola.adConfigReqSending');
     if (isFunction(adTagUrl)) {
       adTagUrl(requestHandler);
     } else {
-      videojs.trigger(this, 'hola.adConfigReqSending');
       http.get(adTagUrl, requestHandler, {
         withCredentials: true
       });
